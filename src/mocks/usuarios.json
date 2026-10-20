@@ -1,0 +1,6 @@
+[
+  { "id": "u-001", "usuario": "professor", "senha": "123456", "perfil": "professor", "nome": "Sônia Maria de Oliveira", "professorId": "prof-001" },
+  { "id": "u-002", "usuario": "coordenador", "senha": "123456", "perfil": "coordenador", "nome": "Carlos Silva" },
+  { "id": "u-003", "usuario": "dge", "senha": "123456", "perfil": "dge", "nome": "Beatriz Vieira Machado" },
+  { "id": "u-004", "usuario": "secretaria", "senha": "123456", "perfil": "secretaria", "nome": "Secretaria Escolar" }
+]
