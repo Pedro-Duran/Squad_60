@@ -1,0 +1,30 @@
+[
+  {
+    "id": "prof-001",
+    "nome": "Sônia Maria de Oliveira",
+    "nomeCurto": "Sônia",
+    "genero": "F",
+    "disciplina": "Matemática",
+    "nivelEnsino": "Ensino Fundamental",
+    "fechamentoAno": {
+      "titulo": "Fechamento do Ano",
+      "percentualConcluido": 82,
+      "turmasEmDia": 1,
+      "totalTurmas": 3
+    }
+  },
+  {
+    "id": "prof-002",
+    "nome": "Carlos Eduardo Santos",
+    "nomeCurto": "Carlos",
+    "genero": "M",
+    "disciplina": "História",
+    "nivelEnsino": "Ensino Médio",
+    "fechamentoAno": {
+      "titulo": "Fechamento do Ano",
+      "percentualConcluido": 64,
+      "turmasEmDia": 2,
+      "totalTurmas": 4
+    }
+  }
+]
