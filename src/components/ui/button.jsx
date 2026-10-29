@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Shared UI components intentionally export helpers. */
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva } from "class-variance-authority";
 import { cn } from "cn"

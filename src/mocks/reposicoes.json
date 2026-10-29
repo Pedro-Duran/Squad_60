@@ -1,0 +1,14 @@
+[
+{"id":"rep-001","professorId":"prof-001","disciplina":"Matemática","turma":"7º Ano A","turno":"Manhã","data":"2026-09-17","inicio":"07:00","fim":"08:40","status":"pendente"},
+{"id":"rep-002","professorId":"prof-001","disciplina":"Matemática","turma":"6º Ano A","turno":"Manhã","data":"2026-09-19","inicio":"09:00","fim":"10:40","status":"aprovada"},
+{"id":"rep-003","professorId":"prof-001","disciplina":"Matemática","turma":"8º Ano A","turno":"Tarde","data":"2026-09-22","inicio":"13:00","fim":"14:40","status":"pendente"},
+{"id":"rep-004","professorId":"prof-001","disciplina":"Matemática","turma":"7º Ano A","turno":"Manhã","data":"2026-09-26","inicio":"07:00","fim":"08:40","status":"aprovada"},
+{"id":"rep-005","professorId":"prof-001","disciplina":"Matemática","turma":"8º Ano A","turno":"Tarde","data":"2026-09-29","inicio":"13:00","fim":"14:40","status":"aprovada"},
+{"id":"rep-006","professorId":"prof-001","disciplina":"Matemática","turma":"6º Ano A","turno":"Manhã","data":"2026-10-03","inicio":"07:00","fim":"08:40","status":"aprovada"},
+{"id":"rep-007","professorId":"prof-001","disciplina":"Matemática","turma":"7º Ano A","turno":"Tarde","data":"2026-10-06","inicio":"13:00","fim":"14:40","status":"aprovada"},
+{"id":"rep-008","professorId":"prof-001","disciplina":"Matemática","turma":"8º Ano A","turno":"Manhã","data":"2026-10-10","inicio":"09:00","fim":"10:40","status":"aprovada"},
+{"id":"rep-009","professorId":"prof-001","disciplina":"Matemática","turma":"6º Ano A","turno":"Tarde","data":"2026-10-13","inicio":"13:00","fim":"14:40","status":"aprovada"},
+{"id":"rep-010","professorId":"prof-001","disciplina":"Matemática","turma":"7º Ano A","turno":"Manhã","data":"2026-10-15","inicio":"07:00","fim":"08:40","status":"pendente"},
+{"id":"rep-011","professorId":"prof-001","disciplina":"Matemática","turma":"6º Ano A","turno":"Manhã","data":"2026-09-05","inicio":"07:00","fim":"08:40","status":"aprovada"},
+{"id":"rep-012","professorId":"prof-001","disciplina":"Matemática","turma":"8º Ano A","turno":"Manhã","data":"2026-09-12","inicio":"07:00","fim":"08:40","status":"recusada"}
+]
