@@ -1,15 +1,19 @@
-const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+export function simularRequisicao(operacao, atraso = 500) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const forcarErro =
+        new URLSearchParams(window.location.search).get("estado") === "erro"
 
-export async function simularRequisicao(obterDados, atraso = 600) {
-  const estado = new URLSearchParams(window.location.search).get("estado")
+      if (forcarErro) {
+        reject(new Error("Falha de conexão. Tente novamente."))
+        return
+      }
 
-  if (estado === "carregando") await esperar(60_000)
-
-  await esperar(atraso)
-
-  if (estado === "erro") {
-    throw new Error("Falha simulada na requisição")
-  }
-
-  return obterDados()
+      try {
+        resolve(operacao())
+      } catch (erro) {
+        reject(erro)
+      }
+    }, atraso)
+  })
 }
