@@ -1,0 +1,137 @@
+[
+  {
+    "id": "alu-001",
+    "nome": "Alberto João",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000001",
+    "cpf": "01111111113"
+  },
+  {
+    "id": "alu-002",
+    "nome": "Ana Clara Santos",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 24,
+    "matricula": "2026000002",
+    "cpf": "20000000002"
+  },
+  {
+    "id": "alu-003",
+    "nome": "Bruna Oliveira",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 23,
+    "matricula": "2026000003",
+    "cpf": "20000000003"
+  },
+  {
+    "id": "alu-004",
+    "nome": "Carlos Eduardo Lima",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000004",
+    "cpf": "20000000004"
+  },
+  {
+    "id": "alu-005",
+    "nome": "Daniela Souza",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 22,
+    "matricula": "2026000005",
+    "cpf": "20000000005"
+  },
+  {
+    "id": "alu-006",
+    "nome": "Eduardo Martins",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000006",
+    "cpf": "20000000006"
+  },
+  {
+    "id": "alu-007",
+    "nome": "Fernanda Costa",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 24,
+    "matricula": "2026000007",
+    "cpf": "20000000007"
+  },
+  {
+    "id": "alu-008",
+    "nome": "Gabriel Almeida",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 23,
+    "matricula": "2026000008",
+    "cpf": "20000000008"
+  },
+  {
+    "id": "alu-009",
+    "nome": "Helena Ferreira",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000009",
+    "cpf": "20000000009"
+  },
+  {
+    "id": "alu-010",
+    "nome": "Isabela Rocha",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 24,
+    "matricula": "2026000010",
+    "cpf": "20000000010"
+  },
+  {
+    "id": "alu-011",
+    "nome": "João Pedro Nunes",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 23,
+    "matricula": "2026000011",
+    "cpf": "20000000011"
+  },
+  {
+    "id": "alu-012",
+    "nome": "Mariana Alves",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000012",
+    "cpf": "20000000012"
+  },
+  {
+    "id": "alu-013",
+    "nome": "Pedro Henrique Silva",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 24,
+    "matricula": "2026000013",
+    "cpf": "20000000013"
+  },
+  {
+    "id": "alu-014",
+    "nome": "Vânia da Silva",
+    "turma": "7º Ano A",
+    "aulasDadas": 25,
+    "presencas": 25,
+    "matricula": "2026000014",
+    "cpf": "20000000014"
+  },
+  {
+    "id": "alu-015",
+    "nome": "Lucas Andrade Ferreira",
+    "turma": "3º Ano A",
+    "aulasDadas": 0,
+    "presencas": 0,
+    "matricula": "2024001782",
+    "cpf": "12345678900"
+  }
+]
