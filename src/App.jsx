@@ -1,3 +1,6 @@
+import ErrorScreen from './components/ErrorScreen.jsx'
+
 export default function App() {
   return <h1 className="p-8 text-3xl font-bold text-emerald-700"> Projeto funcionando</h1>
+  return <ErrorScreen />
 }
