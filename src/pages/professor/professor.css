@@ -864,3 +864,155 @@ body:has(.app-shell) {
   cursor: default;
 }
 
+
+/* ---- Lista vazia ---- */
+.tabela-alunos__vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-1);
+  padding: var(--e-6) var(--e-2);
+  color: var(--texto-suave);
+  text-align: center;
+  font-size: 14px;
+}
+
+.tabela-alunos__vazio p {
+  margin: 0;
+}
+
+.tabela-alunos__dica {
+  font-size: 12px;
+}
+
+/* ---- Aluno adicionado na edição ---- */
+.tag-novo {
+  display: inline-block;
+  margin-left: var(--e-2);
+  padding: 0 6px;
+  border-radius: var(--raio-badge);
+  background: var(--pilula-fundo);
+  color: var(--secundaria);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.remover-aluno {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--alerta-limite);
+}
+
+.remover-aluno:hover {
+  background: var(--pilula-fundo);
+}
+
+/* ---- Campos de texto ---- */
+.campo {
+  width: 100%;
+  min-width: 0;
+  padding: var(--e-3);
+  border: 1.5px solid var(--borda);
+  border-radius: var(--raio-card-sm);
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-size: 14px;
+}
+
+.campo::placeholder {
+  color: var(--texto-suave);
+}
+
+.campo:focus {
+  outline: none;
+  border-color: var(--primaria);
+  box-shadow: 0 0 0 3px rgba(13, 33, 161, 0.15);
+}
+
+.campo--erro {
+  border-color: var(--alerta-limite);
+}
+
+.campo--texto {
+  resize: vertical;
+  min-height: 84px;
+}
+
+.campo-erro {
+  margin: 0;
+  color: var(--alerta-limite);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ---- Adicionar aluno ---- */
+.adicionar-aluno {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--borda);
+}
+
+.adicionar-aluno__rotulo {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.adicionar-aluno__linha {
+  display: flex;
+  gap: var(--e-2);
+}
+
+.adicionar-aluno__botao {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding: 0 var(--e-3);
+  border: none;
+  border-radius: var(--raio-pill);
+  background: var(--ink);
+  color: var(--sobre-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---- Observação do professor ---- */
+.observacoes__rotulo {
+  margin-top: var(--e-2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.observacoes__texto {
+  margin: 0;
+  padding: var(--e-3) var(--e-4);
+  border-radius: var(--raio-card-sm);
+  background: var(--superficie);
+  box-shadow: var(--sombra-card);
+  font-size: 13px;
+  color: var(--texto);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.observacoes__contador {
+  align-self: flex-end;
+  font-size: 11px;
+  color: var(--texto-suave);
+}

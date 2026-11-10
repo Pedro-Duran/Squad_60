@@ -48,9 +48,23 @@ export function buscarChamada(aulaId) {
 
 // Mock: só simula o envio. Os dados voltam ao original quando a página recarrega.
 // ?estado=erro-envio força o erro só no envio (sem derrubar o carregamento).
-export function salvarPresencas(aulaId, presencas) {
+// Valida como o back-end validaria: lista vazia ou aluno sem nome não passam.
+export function salvarPresencas(aulaId, presencas, observacao = "") {
   return simularRequisicao(
-    () => ({ aulaId, presencas, salvoEm: new Date().toISOString() }),
+    () => {
+      if (presencas.length === 0) {
+        throw new Error("A lista de presença está vazia.")
+      }
+      if (presencas.some((p) => !p.nome?.trim())) {
+        throw new Error("Há aluno sem nome na lista.")
+      }
+      return {
+        aulaId,
+        presencas,
+        observacao: observacao.trim(),
+        salvoEm: new Date().toISOString(),
+      }
+    },
     { erroEm: "erro-envio", mensagemErro: "Não foi possível enviar a presença." },
   )
 }
