@@ -1,5 +1,11 @@
 export function simularRequisicao(callback) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(callback()), 350)
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        resolve(callback())
+      } catch (error) {
+        reject(error)
+      }
+    }, 350)
   })
 }

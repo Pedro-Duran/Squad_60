@@ -6,7 +6,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000001",
-    "cpf": "01111111113"
+    "cpf": "01111111113",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-002",
@@ -15,7 +16,8 @@
     "aulasDadas": 25,
     "presencas": 24,
     "matricula": "2026000002",
-    "cpf": "20000000002"
+    "cpf": "20000000002",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-003",
@@ -24,7 +26,8 @@
     "aulasDadas": 25,
     "presencas": 23,
     "matricula": "2026000003",
-    "cpf": "20000000003"
+    "cpf": "20000000003",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-004",
@@ -33,7 +36,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000004",
-    "cpf": "20000000004"
+    "cpf": "20000000004",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-005",
@@ -42,7 +46,8 @@
     "aulasDadas": 25,
     "presencas": 22,
     "matricula": "2026000005",
-    "cpf": "20000000005"
+    "cpf": "20000000005",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-006",
@@ -51,7 +56,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000006",
-    "cpf": "20000000006"
+    "cpf": "20000000006",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-007",
@@ -60,7 +66,8 @@
     "aulasDadas": 25,
     "presencas": 24,
     "matricula": "2026000007",
-    "cpf": "20000000007"
+    "cpf": "20000000007",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-008",
@@ -69,7 +76,8 @@
     "aulasDadas": 25,
     "presencas": 23,
     "matricula": "2026000008",
-    "cpf": "20000000008"
+    "cpf": "20000000008",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-009",
@@ -78,7 +86,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000009",
-    "cpf": "20000000009"
+    "cpf": "20000000009",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-010",
@@ -87,7 +96,8 @@
     "aulasDadas": 25,
     "presencas": 24,
     "matricula": "2026000010",
-    "cpf": "20000000010"
+    "cpf": "20000000010",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-011",
@@ -96,7 +106,8 @@
     "aulasDadas": 25,
     "presencas": 23,
     "matricula": "2026000011",
-    "cpf": "20000000011"
+    "cpf": "20000000011",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-012",
@@ -105,7 +116,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000012",
-    "cpf": "20000000012"
+    "cpf": "20000000012",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-013",
@@ -114,7 +126,8 @@
     "aulasDadas": 25,
     "presencas": 24,
     "matricula": "2026000013",
-    "cpf": "20000000013"
+    "cpf": "20000000013",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-014",
@@ -123,7 +136,8 @@
     "aulasDadas": 25,
     "presencas": 25,
     "matricula": "2026000014",
-    "cpf": "20000000014"
+    "cpf": "20000000014",
+    "situacao": "Matriculado"
   },
   {
     "id": "alu-015",
@@ -132,6 +146,9 @@
     "aulasDadas": 0,
     "presencas": 0,
     "matricula": "2024001782",
-    "cpf": "12345678900"
+    "cpf": "12345678900",
+    "situacao": "Matriculado",
+    "turno": "Manhã",
+    "modalidade": "Ensino Médio"
   }
 ]

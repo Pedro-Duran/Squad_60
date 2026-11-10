@@ -1,10 +1,13 @@
-import { Link } from "react-router"
+import { Link, useLocation } from "react-router"
 import { ChevronRight } from "lucide-react"
 
 export function ItemAluno({ aluno }) {
+  const location = useLocation()
+
   return (
     <Link
       to={`/dge/alunos/${aluno.id}`}
+      state={{ from: `${location.pathname}${location.search}` }}
       className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-primary"
     >
       <div>

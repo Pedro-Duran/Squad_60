@@ -1,6 +1,7 @@
 import { Link } from "react-router"
+import { ArrowLeft } from "lucide-react"
 
-export function AbasAlunos({ ativa = "pesquisar", alunoId }) {
+export function AbasAlunos({ ativa = "pesquisar", alunoId, voltarPara }) {
   const abas = [
     { id: "pesquisar", label: "Pesquisar", path: "/dge/alunos", habilitada: true },
     {
@@ -32,6 +33,15 @@ export function AbasAlunos({ ativa = "pesquisar", alunoId }) {
   return (
     <header className="bg-navy text-white">
       <div className="flex items-center px-4 pb-1 pt-4 text-xs font-semibold tracking-wider">
+        {alunoId && (
+          <Link
+            to={voltarPara || "/dge/alunos"}
+            aria-label="Voltar"
+            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center"
+          >
+            <ArrowLeft aria-hidden="true" className="size-[18px]" />
+          </Link>
+        )}
         <span>SEDUC · SERGIPE</span>
       </div>
       <nav
