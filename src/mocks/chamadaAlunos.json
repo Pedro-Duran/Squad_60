@@ -1,0 +1,16 @@
+[
+  { "id": "alu-001", "nome": "Alberto João", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-002", "nome": "Beatriz Maria", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-003", "nome": "Caio Silva", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-004", "nome": "Erick Farias", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-005", "nome": "Gabrielly Santos", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-006", "nome": "Laura Monique", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-007", "nome": "Mario de Sá", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-008", "nome": "Pedro José", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-009", "nome": "Renato Lima", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-010", "nome": "Sara Cardoso", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-011", "nome": "Tamires Alves", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 25 },
+  { "id": "alu-012", "nome": "Vânia da Silva", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 24 },
+  { "id": "alu-013", "nome": "Ygor dos Santos", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 20 },
+  { "id": "alu-014", "nome": "Zelma da Silva", "turma": "7º Ano A", "aulasDadas": 25, "presencas": 18 }
+]
