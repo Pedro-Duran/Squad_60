@@ -46,6 +46,11 @@
 
   --sombra-card: 0 1px 3px rgba(1, 22, 56, 0.08), 0 1px 2px rgba(1, 22, 56, 0.04);
 
+  /* largura máxima do conteúdo (cresce no tablet e no computador) */
+  --largura-conteudo: 430px;
+  /* margem lateral que centraliza o conteúdo em telas largas */
+  --respiro: max(var(--e-4), calc((100% - var(--largura-conteudo)) / 2));
+
   /* alturas das barras fixas de baixo */
   --h-tabbar: 60px;
   --h-rodape: 30px;
@@ -77,8 +82,7 @@ body:has(.app-shell) {
   display: flex;
   flex-direction: column;
   background: var(--fundo);
-  max-width: 430px;
-  margin: 0 auto;
+  width: 100%;
   position: relative;
 }
 
@@ -86,7 +90,7 @@ body:has(.app-shell) {
 .app-header {
   background: var(--ink);
   color: var(--sobre-ink);
-  padding: var(--e-3) var(--e-4) var(--e-3);
+  padding: var(--e-3) var(--respiro);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
@@ -132,6 +136,8 @@ body:has(.app-shell) {
 .app-main {
   flex: 1;
   width: 100%;
+  max-width: calc(var(--largura-conteudo) + 2 * var(--e-4));
+  margin: 0 auto;
   padding: var(--e-4);
   /* espaço para não ficar atrás da tab bar + rodapé */
   padding-bottom: calc(var(--h-tabbar) + var(--h-rodape) + var(--e-4));
@@ -143,8 +149,6 @@ body:has(.app-shell) {
   bottom: 0;
   left: 0;
   right: 0;
-  max-width: 430px;
-  margin: 0 auto;
   z-index: 10;
 }
 
@@ -153,6 +157,7 @@ body:has(.app-shell) {
   background: var(--ink);
   display: flex;
   align-items: stretch;
+  padding: 0 var(--respiro);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -1015,4 +1020,269 @@ body:has(.app-shell) {
   align-self: flex-end;
   font-size: 11px;
   color: var(--texto-suave);
+}
+
+/* ---- Checkbox de presença ---- */
+.presenca-check {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.presenca-check:disabled {
+  cursor: default;
+}
+
+.presenca-check:focus-visible {
+  outline: 3px solid var(--primaria);
+  outline-offset: 2px;
+}
+
+label.nome-aluno {
+  cursor: pointer;
+}
+
+.linha-aluno--ausente .avatar {
+  background: var(--borda);
+  color: var(--texto-suave);
+}
+
+.linha-aluno--ausente .nome-aluno--normal {
+  color: var(--texto-suave);
+}
+
+/* ---- Topo da tabela: turma + contagem ---- */
+.tabela-alunos__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-2);
+  padding-bottom: var(--e-3);
+}
+
+.tabela-alunos__turma {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tabela-alunos__contagem {
+  padding: 2px var(--e-2);
+  border-radius: var(--raio-pill);
+  background: var(--pilula-fundo);
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---- Colunas da presença e ações ---- */
+.lista-presenca__principal,
+.lista-presenca__lateral,
+.lista-presenca__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+  min-width: 0;
+}
+
+.lista-presenca__acoes {
+  gap: var(--e-3);
+}
+
+.btn-editar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+}
+
+.btn-editar:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ================================================================== */
+/* Responsivo                                                          */
+/* celular: até 767px (padrão acima) · tablet: 768px+ · computador: 1100px+ */
+/* ================================================================== */
+
+/* toque mais confortável em telas pequenas */
+@media (max-width: 359px) {
+  .tabela-alunos {
+    padding: var(--e-3);
+  }
+
+  .tabela-alunos__cabecalho,
+  .linha-aluno {
+    grid-template-columns: 1fr 36px 64px;
+  }
+
+  .freq__barra {
+    width: 60px;
+  }
+
+  .adicionar-aluno__linha {
+    flex-direction: column;
+  }
+
+  .adicionar-aluno__botao {
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
+/* tablet (iPad etc.) */
+@media (min-width: 768px) {
+  .app-shell {
+    --largura-conteudo: 720px;
+  }
+
+  .app-header {
+    padding-top: var(--e-4);
+    padding-bottom: var(--e-4);
+  }
+
+  .app-header__titulo {
+    font-size: 26px;
+  }
+
+  .app-main {
+    padding-top: var(--e-6);
+  }
+
+  .tabbar__item {
+    flex-direction: row;
+    gap: var(--e-2);
+    font-size: 13px;
+  }
+
+  .tabbar__ponto {
+    display: none;
+  }
+
+  .tabbar__item--ativo {
+    box-shadow: inset 0 -3px 0 var(--primaria);
+  }
+
+  /* Aulas de Hoje */
+  .linha-aula,
+  .intervalo {
+    grid-template-columns: 56px 1fr 56px;
+  }
+
+  .card-aula__acoes {
+    flex-direction: row;
+  }
+
+  .card-aula__acoes .btn-pilula {
+    flex: 1;
+  }
+
+  /* Lista de presença */
+  .tabela-alunos {
+    padding: var(--e-4) var(--e-6);
+  }
+
+  .tabela-alunos__cabecalho,
+  .linha-aluno {
+    grid-template-columns: 1fr 64px 140px;
+    gap: var(--e-4);
+  }
+
+  .freq {
+    flex-direction: row;
+    gap: var(--e-2);
+  }
+
+  .freq__barra {
+    width: 90px;
+  }
+
+  .freq__valor {
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .nome-aluno {
+    font-size: 15px;
+  }
+
+  .lista-presenca__acoes {
+    flex-direction: row-reverse;
+  }
+
+  .lista-presenca__acoes > * {
+    flex: 1;
+  }
+}
+
+/* computador */
+@media (min-width: 1100px) {
+  .app-shell {
+    --largura-conteudo: 1120px;
+  }
+
+  /* Aulas de Hoje: dia e resumo à esquerda, lista à direita */
+  .aulas-hoje {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: var(--e-6);
+    align-items: start;
+  }
+
+  .aulas-hoje > .seletor-dia {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .aulas-hoje > .resumo-dia {
+    grid-column: 1;
+    grid-row: 2;
+    position: sticky;
+    top: var(--e-4);
+  }
+
+  .aulas-hoje > :not(.seletor-dia):not(.resumo-dia) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  /* Lista de presença: tabela à esquerda, observações e envio à direita */
+  .lista-presenca {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: var(--e-6);
+    align-items: start;
+  }
+
+  .lista-presenca__lateral {
+    position: sticky;
+    top: var(--e-4);
+  }
+
+  .lista-presenca__acoes {
+    flex-direction: column;
+  }
+
+  .lista-presenca__acoes > * {
+    flex: none;
+  }
+
+  .linha-aluno:hover {
+    background: var(--fundo);
+  }
+
+  .linha-aluno {
+    border-radius: var(--raio-badge);
+    padding-left: var(--e-2);
+    padding-right: var(--e-2);
+  }
+
+  .tabela-alunos__cabecalho {
+    padding-left: var(--e-2);
+    padding-right: var(--e-2);
+  }
 }

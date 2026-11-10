@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router"
-import { Check, Trash2, UserPlus, Users } from "lucide-react"
+import { RotateCcw, Trash2, UserPlus, Users } from "lucide-react"
 import { buscarChamada, salvarPresencas } from "@/services/aulaService"
 import { useDados } from "@/hooks/useDados"
 import {
@@ -19,7 +19,7 @@ const TAMANHO_MINIMO_NOME = 3
 const TAMANHO_MAXIMO_OBSERVACAO = 500
 
 // O que o professor mexe na tela. "salvo" é o último envio com sucesso;
-// "rascunho" é o que está sendo editado (Cancelar volta para o salvo).
+// "rascunho" é o que está na tela agora ("Desfazer" volta para o salvo).
 const SEM_ALTERACOES = { mudancas: {}, extras: [], observacao: "" }
 
 // id local para alunos adicionados na tela (o back-end daria o id real).
@@ -30,15 +30,37 @@ export default function ListaPresenca() {
   const [params] = useSearchParams()
   const aulaId = params.get("aula") ?? AULA_PADRAO_ID
 
-  // key={aulaId}: trocar de aula zera marcações e modo edição.
+  // key={aulaId}: trocar de aula zera as marcações.
   return <ChamadaDaAula key={aulaId} aulaId={aulaId} />
+}
+
+// Checkbox "marcar todos": fica no meio (indeterminate) quando só parte está marcada.
+function CheckboxTodos({ total, marcados, aoMudar }) {
+  const ref = useRef(null)
+  const todos = total > 0 && marcados === total
+  const alguns = marcados > 0 && marcados < total
+
+  useEffect(() => {
+    if (ref.current) ref.current.indeterminate = alguns
+  }, [alguns])
+
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      className="presenca-check"
+      aria-label={todos ? "Desmarcar todos" : "Marcar todos como presentes"}
+      checked={todos}
+      disabled={total === 0}
+      onChange={() => aoMudar(!todos)}
+    />
+  )
 }
 
 function ChamadaDaAula({ aulaId }) {
   // Hooks sempre no topo, antes de qualquer return.
   const buscar = useCallback(() => buscarChamada(aulaId), [aulaId])
   const { dados, carregando, erro, recarregar } = useDados(buscar)
-  const [modoEdicao, setModoEdicao] = useState(false)
   const [salvo, setSalvo] = useState(SEM_ALTERACOES)
   const [rascunho, setRascunho] = useState(SEM_ALTERACOES)
   const [novoNome, setNovoNome] = useState("")
@@ -50,31 +72,33 @@ function ChamadaDaAula({ aulaId }) {
   if (!dados) return null
 
   const { aula } = dados
-  const estado = modoEdicao ? rascunho : salvo
-  const alunos = [...dados.alunos, ...estado.extras]
+  const alunos = [...dados.alunos, ...rascunho.extras]
+  const alterado = rascunho !== salvo
 
   // A presença é a mudança do aluno, se existir, ou a que veio do service.
   const presencaDe = (aluno) =>
-    aluno.id in estado.mudancas ? estado.mudancas[aluno.id] : aluno.presente
+    aluno.id in rascunho.mudancas ? rascunho.mudancas[aluno.id] : aluno.presente
 
-  function alternar(aluno) {
-    if (!modoEdicao) return
+  const presentes = alunos.filter(presencaDe).length
+
+  function marcar(aluno, presente) {
     setRascunho((r) => ({
       ...r,
-      mudancas: { ...r.mudancas, [aluno.id]: !presencaDe(aluno) },
+      mudancas: { ...r.mudancas, [aluno.id]: presente },
     }))
   }
 
-  function editar() {
-    setRascunho(salvo)
-    setModoEdicao(true)
+  function marcarTodos(presente) {
+    setRascunho((r) => ({
+      ...r,
+      mudancas: Object.fromEntries(alunos.map((a) => [a.id, presente])),
+    }))
   }
 
-  function cancelar() {
-    setRascunho(salvo) // desfaz o que não foi enviado
+  function desfazer() {
+    setRascunho(salvo)
     setNovoNome("")
     setErroNome("")
-    setModoEdicao(false)
   }
 
   function adicionarAluno(evento) {
@@ -124,7 +148,7 @@ function ChamadaDaAula({ aulaId }) {
     if (alunos.length === 0) {
       return "A lista está vazia. Adicione pelo menos um aluno antes de enviar."
     }
-    if (!alunos.some(presencaDe)) {
+    if (presentes === 0) {
       return "Nenhum aluno marcado como presente. Marque a presença antes de enviar."
     }
     if (novoNome.trim()) {
@@ -150,9 +174,8 @@ function ChamadaDaAula({ aulaId }) {
       await salvarPresencas(aulaId, presencas, rascunho.observacao)
       toast.success("Presença enviada.")
       setSalvo(rascunho)
-      setModoEdicao(false) // volta ao modo leitura mostrando a chamada nova
     } catch (e) {
-      // continua no modo edição, sem perder o que foi marcado
+      // mantém o que foi marcado para tentar de novo
       toast.error(e?.message ?? "Não foi possível enviar a presença.")
     } finally {
       setEnviando(false)
@@ -173,86 +196,99 @@ function ChamadaDaAula({ aulaId }) {
 
   return (
     <div className="lista-presenca">
-      <CardDataAula data={aula.data} horario={aula.horario} />
+      <div className="lista-presenca__principal">
+        <CardDataAula data={aula.data} horario={aula.horario} />
 
-      <section className="tabela-alunos" aria-label={`Alunos do ${aula.turma}`}>
-        <div className="tabela-alunos__cabecalho">
-          <span>Nome</span>
-          <span className="col-centro">P</span>
-          <span className="col-centro">Freq.</span>
-        </div>
-
-        {alunos.length === 0 && (
-          <div className="tabela-alunos__vazio">
-            <Users size={28} aria-hidden="true" />
-            <p>Nenhum aluno nesta turma ainda.</p>
-            <p className="tabela-alunos__dica">
-              Toque em <strong>Editar presença</strong> para adicionar alunos.
-            </p>
+        <section className="tabela-alunos" aria-label={`Alunos do ${aula.turma}`}>
+          <div className="tabela-alunos__topo">
+            <span className="tabela-alunos__turma">{aula.turma}</span>
+            <span className="tabela-alunos__contagem" aria-live="polite">
+              {presentes} de {alunos.length} presentes
+            </span>
           </div>
-        )}
 
-        {alunos.map((aluno) => {
-          const presente = presencaDe(aluno)
-          const freq = calcularFrequencia(aluno)
-          const situacao = situacaoFrequencia(freq)
-          return (
-            <div className="linha-aluno" key={aluno.id}>
-              <div className="linha-aluno__nome">
-                <span className="avatar" aria-hidden="true">
-                  {aluno.nome.charAt(0).toUpperCase()}
-                </span>
-                <span className={`nome-aluno nome-aluno--${situacao}`}>
-                  {aluno.nome}
-                  {aluno.novo && <span className="tag-novo">novo</span>}
-                </span>
-                {modoEdicao && aluno.novo && (
-                  <button
-                    type="button"
-                    className="remover-aluno"
-                    aria-label={`Remover ${aluno.nome}`}
-                    onClick={() => removerAluno(aluno.id)}
-                  >
-                    <Trash2 size={16} aria-hidden="true" />
-                  </button>
-                )}
-              </div>
+          <div className="tabela-alunos__cabecalho">
+            <span>Nome</span>
+            <span className="col-centro">
+              <CheckboxTodos
+                total={alunos.length}
+                marcados={presentes}
+                aoMudar={marcarTodos}
+              />
+            </span>
+            <span className="col-centro">Freq.</span>
+          </div>
 
-              <div className="col-centro">
-                <button
-                  type="button"
-                  className={`presenca-btn ${presente ? "presenca-btn--on" : ""}`}
-                  aria-pressed={presente}
-                  aria-label={`Presença de ${aluno.nome}`}
-                  disabled={!modoEdicao}
-                  onClick={() => alternar(aluno)}
-                >
-                  {presente && <Check size={16} strokeWidth={3} aria-hidden="true" />}
-                </button>
-              </div>
-
-              <div className="freq">
-                {aluno.novo ? (
-                  <span className="freq__valor">—</span>
-                ) : (
-                  <>
-                    <div className="freq__barra">
-                      <div
-                        className={`freq__preenchido freq__preenchido--${situacao}`}
-                        style={{ width: `${freq}%` }}
-                      />
-                    </div>
-                    <span className={`freq__valor freq__valor--${situacao}`}>
-                      {freq}%
-                    </span>
-                  </>
-                )}
-              </div>
+          {alunos.length === 0 && (
+            <div className="tabela-alunos__vazio">
+              <Users size={28} aria-hidden="true" />
+              <p>Nenhum aluno nesta turma ainda.</p>
+              <p className="tabela-alunos__dica">Adicione alunos pelo campo abaixo.</p>
             </div>
-          )
-        })}
+          )}
 
-        {modoEdicao && (
+          {alunos.map((aluno) => {
+            const presente = presencaDe(aluno)
+            const freq = calcularFrequencia(aluno)
+            const situacao = situacaoFrequencia(freq)
+            const idCheck = `presenca-${aluno.id}`
+            return (
+              <div
+                className={`linha-aluno ${presente ? "" : "linha-aluno--ausente"}`}
+                key={aluno.id}
+              >
+                <div className="linha-aluno__nome">
+                  <span className="avatar" aria-hidden="true">
+                    {aluno.nome.charAt(0).toUpperCase()}
+                  </span>
+                  {/* o nome também marca/desmarca (área de toque maior) */}
+                  <label htmlFor={idCheck} className={`nome-aluno nome-aluno--${situacao}`}>
+                    {aluno.nome}
+                    {aluno.novo && <span className="tag-novo">novo</span>}
+                  </label>
+                  {aluno.novo && (
+                    <button
+                      type="button"
+                      className="remover-aluno"
+                      aria-label={`Remover ${aluno.nome}`}
+                      onClick={() => removerAluno(aluno.id)}
+                    >
+                      <Trash2 size={16} aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="col-centro">
+                  <input
+                    id={idCheck}
+                    type="checkbox"
+                    className="presenca-check"
+                    checked={presente}
+                    onChange={(e) => marcar(aluno, e.target.checked)}
+                  />
+                </div>
+
+                <div className="freq">
+                  {aluno.novo ? (
+                    <span className="freq__valor">—</span>
+                  ) : (
+                    <>
+                      <div className="freq__barra">
+                        <div
+                          className={`freq__preenchido freq__preenchido--${situacao}`}
+                          style={{ width: `${freq}%` }}
+                        />
+                      </div>
+                      <span className={`freq__valor freq__valor--${situacao}`}>
+                        {freq}%
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+
           <form className="adicionar-aluno" onSubmit={adicionarAluno} noValidate>
             <label className="adicionar-aluno__rotulo" htmlFor="novo-aluno">
               Adicionar aluno
@@ -284,75 +320,67 @@ function ChamadaDaAula({ aulaId }) {
               </p>
             )}
           </form>
-        )}
-      </section>
+        </section>
+      </div>
 
-      <button
-        type="button"
-        className="btn-editar"
-        onClick={modoEdicao ? cancelar : editar}
-      >
-        {modoEdicao ? "Cancelar edição" : "Editar presença"}
-      </button>
-
-      <section className="observacoes">
-        <h2 className="observacoes__titulo">Observações</h2>
-        <div className="observacoes__card">
-          {avisos.length === 0 ? (
-            <p className="observacoes__item">Nenhum aluno perto do limite de faltas.</p>
-          ) : (
-            <>
-              {avisos.map((aviso) => (
-                <p className="observacoes__item" key={aviso}>
-                  {aviso}
+      <aside className="lista-presenca__lateral">
+        <section className="observacoes">
+          <h2 className="observacoes__titulo">Observações</h2>
+          <div className="observacoes__card">
+            {avisos.length === 0 ? (
+              <p className="observacoes__item">Nenhum aluno perto do limite de faltas.</p>
+            ) : (
+              <>
+                {avisos.map((aviso) => (
+                  <p className="observacoes__item" key={aviso}>
+                    {aviso}
+                  </p>
+                ))}
+                <p className="observacoes__item observacoes__item--regra">
+                  A frequência mínima exigida é de {FREQUENCIA_MINIMA}%.
                 </p>
-              ))}
-              <p className="observacoes__item observacoes__item--regra">
-                A frequência mínima exigida é de {FREQUENCIA_MINIMA}%.
-              </p>
-            </>
-          )}
+              </>
+            )}
+          </div>
+
+          <label className="observacoes__rotulo" htmlFor="observacao-professor">
+            Observação do professor
+          </label>
+          <textarea
+            id="observacao-professor"
+            className="campo campo--texto"
+            rows={3}
+            maxLength={TAMANHO_MAXIMO_OBSERVACAO}
+            placeholder="Escreva algo sobre a aula ou a turma (opcional)"
+            value={rascunho.observacao}
+            onChange={(e) => setRascunho((r) => ({ ...r, observacao: e.target.value }))}
+          />
+          <span className="observacoes__contador">
+            {rascunho.observacao.length}/{TAMANHO_MAXIMO_OBSERVACAO}
+          </span>
+        </section>
+
+        <div className="lista-presenca__acoes">
+          <button
+            type="button"
+            className="btn-editar"
+            disabled={!alterado || enviando}
+            onClick={desfazer}
+          >
+            <RotateCcw size={16} aria-hidden="true" />
+            Desfazer alterações
+          </button>
+
+          <button
+            type="button"
+            className="btn-enviar"
+            disabled={enviando}
+            onClick={enviar}
+          >
+            {enviando ? "Enviando…" : "Enviar"}
+          </button>
         </div>
-
-        {modoEdicao ? (
-          <>
-            <label className="observacoes__rotulo" htmlFor="observacao-professor">
-              Observação do professor
-            </label>
-            <textarea
-              id="observacao-professor"
-              className="campo campo--texto"
-              rows={3}
-              maxLength={TAMANHO_MAXIMO_OBSERVACAO}
-              placeholder="Escreva algo sobre a aula ou a turma (opcional)"
-              value={rascunho.observacao}
-              onChange={(e) =>
-                setRascunho((r) => ({ ...r, observacao: e.target.value }))
-              }
-            />
-            <span className="observacoes__contador">
-              {rascunho.observacao.length}/{TAMANHO_MAXIMO_OBSERVACAO}
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="observacoes__rotulo">Observação do professor</span>
-            <p className="observacoes__texto">
-              {salvo.observacao.trim() ||
-                "Nenhuma observação. Toque em Editar presença para escrever."}
-            </p>
-          </>
-        )}
-      </section>
-
-      <button
-        type="button"
-        className="btn-enviar"
-        disabled={!modoEdicao || enviando}
-        onClick={enviar}
-      >
-        {enviando ? "Enviando…" : "Enviar"}
-      </button>
+      </aside>
     </div>
   )
 }
