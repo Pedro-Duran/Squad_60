@@ -1,0 +1,34 @@
+[
+  {
+    "id": "aula-001",
+    "professorId": "prof-001",
+    "disciplina": "Matemática",
+    "turma": "7º Ano A",
+    "data": "2026-09-14",
+    "horario": "07:00",
+    "presencas": [
+      { "alunoId": "alu-001", "presente": true },
+      { "alunoId": "alu-012", "presente": false },
+      { "alunoId": "alu-013", "presente": false },
+      { "alunoId": "alu-014", "presente": false },
+      { "alunoId": "alu-015", "presente": true },
+      { "alunoId": "alu-016", "presente": true },
+      { "alunoId": "alu-017", "presente": true },
+      { "alunoId": "alu-018", "presente": true },
+      { "alunoId": "alu-019", "presente": true },
+      { "alunoId": "alu-020", "presente": true },
+      { "alunoId": "alu-021", "presente": true },
+      { "alunoId": "alu-022", "presente": true },
+      { "alunoId": "alu-023", "presente": true },
+      { "alunoId": "alu-024", "presente": true }
+    ],
+    "topicos": [
+      "Equação do primeiro grau",
+      "Problemas envolvendo equação do primeiro grau"
+    ],
+    "tarefas": [
+      "Página 14 (Equação do primeiro grau)",
+      "Exercícios no caderno de problemas envolvendo equação do primeiro grau"
+    ]
+  }
+]
