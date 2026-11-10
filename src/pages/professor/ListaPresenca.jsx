@@ -16,11 +16,12 @@ import SkeletonAulas from "@/components/professor/SkeletonAulas"
 // A aula vem de "Aulas de Hoje" (?aula=). Sem ela, abre a primeira do mock.
 const AULA_PADRAO_ID = "aula-001"
 const TAMANHO_MINIMO_NOME = 3
-const TAMANHO_MAXIMO_OBSERVACAO = 500
+const TAMANHO_MAXIMO_OBSERVACAO = 1000
 
 // O que o professor mexe na tela. "salvo" é o último envio com sucesso;
 // "rascunho" é o que está na tela agora ("Desfazer" volta para o salvo).
-const SEM_ALTERACOES = { mudancas: {}, extras: [], observacao: "" }
+// observacao null = o professor ainda não mexeu: mostra o texto automático.
+const SEM_ALTERACOES = { mudancas: {}, extras: [], observacao: null }
 
 // id local para alunos adicionados na tela (o back-end daria o id real).
 let contadorNovos = 0
@@ -171,7 +172,7 @@ function ChamadaDaAula({ aulaId }) {
       presente: presencaDe(a),
     }))
     try {
-      await salvarPresencas(aulaId, presencas, rascunho.observacao)
+      await salvarPresencas(aulaId, presencas, observacao)
       toast.success("Presença enviada.")
       setSalvo(rascunho)
     } catch (e) {
@@ -182,7 +183,8 @@ function ChamadaDaAula({ aulaId }) {
     }
   }
 
-  // Observações geradas a partir dos dados (nunca escritas à mão).
+  // Texto inicial das observações, gerado a partir dos dados de frequência.
+  // O professor pode editar ou apagar à vontade.
   const avisos = alunos.flatMap((aluno) => {
     const situacao = situacaoFrequencia(calcularFrequencia(aluno))
     if (situacao === "atencao") {
@@ -193,6 +195,11 @@ function ChamadaDaAula({ aulaId }) {
     }
     return []
   })
+  const observacaoAutomatica =
+    avisos.length === 0
+      ? ""
+      : [...avisos, `A frequência mínima exigida é de ${FREQUENCIA_MINIMA}%.`].join("\n")
+  const observacao = rascunho.observacao ?? observacaoAutomatica
 
   return (
     <div className="lista-presenca">
@@ -325,38 +332,20 @@ function ChamadaDaAula({ aulaId }) {
 
       <aside className="lista-presenca__lateral">
         <section className="observacoes">
-          <h2 className="observacoes__titulo">Observações</h2>
-          <div className="observacoes__card">
-            {avisos.length === 0 ? (
-              <p className="observacoes__item">Nenhum aluno perto do limite de faltas.</p>
-            ) : (
-              <>
-                {avisos.map((aviso) => (
-                  <p className="observacoes__item" key={aviso}>
-                    {aviso}
-                  </p>
-                ))}
-                <p className="observacoes__item observacoes__item--regra">
-                  A frequência mínima exigida é de {FREQUENCIA_MINIMA}%.
-                </p>
-              </>
-            )}
-          </div>
-
-          <label className="observacoes__rotulo" htmlFor="observacao-professor">
-            Observação do professor
+          <label className="observacoes__titulo" htmlFor="observacoes">
+            Observações
           </label>
           <textarea
-            id="observacao-professor"
+            id="observacoes"
             className="campo campo--texto"
-            rows={3}
+            rows={5}
             maxLength={TAMANHO_MAXIMO_OBSERVACAO}
             placeholder="Escreva algo sobre a aula ou a turma (opcional)"
-            value={rascunho.observacao}
+            value={observacao}
             onChange={(e) => setRascunho((r) => ({ ...r, observacao: e.target.value }))}
           />
           <span className="observacoes__contador">
-            {rascunho.observacao.length}/{TAMANHO_MAXIMO_OBSERVACAO}
+            {observacao.length}/{TAMANHO_MAXIMO_OBSERVACAO}
           </span>
         </section>
 

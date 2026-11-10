@@ -831,26 +831,8 @@ body:has(.app-shell) {
   margin: 0;
 }
 
-.observacoes__card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--e-2);
-  background: var(--superficie);
-  border-radius: var(--raio-card-sm);
-  padding: var(--e-4);
-  box-shadow: var(--sombra-card);
-}
 
-.observacoes__item {
-  margin: 0;
-  font-size: 13px;
-  color: var(--texto);
-}
 
-.observacoes__item--regra {
-  color: var(--texto-suave);
-  font-weight: 600;
-}
 
 /* Botão enviar */
 .btn-enviar {
@@ -996,25 +978,7 @@ body:has(.app-shell) {
   font-weight: 600;
 }
 
-/* ---- Observação do professor ---- */
-.observacoes__rotulo {
-  margin-top: var(--e-2);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--texto-suave);
-}
-
-.observacoes__texto {
-  margin: 0;
-  padding: var(--e-3) var(--e-4);
-  border-radius: var(--raio-card-sm);
-  background: var(--superficie);
-  box-shadow: var(--sombra-card);
-  font-size: 13px;
-  color: var(--texto);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
+/* ---- Observações ---- */
 
 .observacoes__contador {
   align-self: flex-end;
