@@ -1,0 +1,866 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* ================================================================== */
+/* Telas do professor: Aulas de Hoje e Lista de presença               */
+/* Design System Squad 60 — Paleta B. Nenhum hex vai para os           */
+/* componentes: eles usam sempre var(--token).                         */
+/* Os tokens ficam em .app-shell (e não em :root) para não mexer no    */
+/* tema do shadcn/Tailwind usado no resto do app (login etc.).         */
+/* ================================================================== */
+.app-shell {
+  /* paleta B */
+  --fundo: #dadad9; /* fundo da tela */
+  --superficie: #ffffff; /* cards / superfícies */
+  --ink: #011638; /* header, tab bar, rodapé */
+  --primaria: #0d21a1; /* ação principal (1–2 por tela) */
+  --secundaria: #5e807f; /* status positivo */
+  --alerta-atencao: #f1892d; /* frequência perto do limite */
+  --alerta-limite: #e22b2b; /* frequência abaixo do mínimo */
+  --texto: #141414; /* texto sobre superfície */
+  --texto-suave: #5b616e; /* apoio */
+  --sobre-ink: #ffffff; /* texto sobre ink */
+  --sobre-primaria: #ffffff; /* texto sobre primária */
+  --borda: #e3e4e3; /* divisórias / contornos leves */
+  --pilula-fundo: #eef0f2; /* badges neutros */
+  --branco: #ffffff;
+
+  /* cor por turma (ordem alfabética das turmas) — mesma cor aqui e em
+     Aulas da Semana. */
+  --turma-1: var(--ink);
+  --turma-2: var(--secundaria);
+  --turma-3: #b8c2c2;
+
+  /* escala de espaçamento (múltiplos de 4px) */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 20px;
+  --e-6: 24px;
+
+  /* raios */
+  --raio-badge: 8px;
+  --raio-card: 16px;
+  --raio-card-sm: 12px;
+  --raio-pill: 100px;
+
+  --sombra-card: 0 1px 3px rgba(1, 22, 56, 0.08), 0 1px 2px rgba(1, 22, 56, 0.04);
+
+  /* alturas das barras fixas de baixo */
+  --h-tabbar: 60px;
+  --h-rodape: 30px;
+
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+}
+
+/* fundo da página inteira enquanto uma tela do professor está aberta */
+body:has(.app-shell) {
+  background: #dadad9;
+}
+
+.app-shell,
+.app-shell * {
+  box-sizing: border-box;
+}
+
+.app-shell button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* AppShell: header + conteúdo + bottom tab bar + rodapé fixo          */
+/* ------------------------------------------------------------------ */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fundo);
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ---- Header (ink) ---- */
+.app-header {
+  background: var(--ink);
+  color: var(--sobre-ink);
+  padding: var(--e-3) var(--e-4) var(--e-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+}
+
+.app-header__orgao {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.app-header__linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  min-height: 28px;
+}
+
+.app-header__voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--sobre-ink);
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.app-header__titulo {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ---- Conteúdo ---- */
+.app-main {
+  flex: 1;
+  width: 100%;
+  padding: var(--e-4);
+  /* espaço para não ficar atrás da tab bar + rodapé */
+  padding-bottom: calc(var(--h-tabbar) + var(--h-rodape) + var(--e-4));
+}
+
+/* ---- Bottom tab bar + rodapé (fixos, ink) ---- */
+.barra-inferior {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 430px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.tabbar {
+  height: var(--h-tabbar);
+  background: var(--ink);
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.tabbar__item--ativo {
+  color: var(--sobre-ink);
+}
+
+.tabbar__item--ativo .tabbar__rotulo {
+  color: var(--sobre-ink);
+}
+
+/* a aba ativa marca a cor primária num ponto de destaque */
+.tabbar__item--ativo .tabbar__ponto {
+  background: var(--primaria);
+}
+
+.tabbar__ponto {
+  width: 18px;
+  height: 3px;
+  border-radius: var(--raio-pill);
+  background: transparent;
+}
+
+.rodape {
+  height: var(--h-rodape);
+  background: var(--ink);
+  color: var(--sobre-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Página Aulas de Hoje                                                */
+/* ------------------------------------------------------------------ */
+.aulas-hoje {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+}
+
+.aulas-hoje__vazio {
+  text-align: center;
+  color: var(--texto-suave);
+  padding: var(--e-6) var(--e-2);
+  font-size: 14px;
+}
+
+/* ---- Seletor de dia ---- */
+.seletor-dia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-2);
+}
+
+.seletor-dia__seta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  color: var(--ink);
+  border-radius: var(--raio-pill);
+  padding: var(--e-2) var(--e-3);
+  min-height: 40px;
+  font-weight: 600;
+}
+
+.seletor-dia__centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.seletor-dia__nome {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.seletor-dia__data {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+.seletor-dia__sigla {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---- Card de resumo do dia ---- */
+.resumo-dia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  background: var(--superficie);
+  border-radius: var(--raio-card);
+  padding: var(--e-4);
+  box-shadow: var(--sombra-card);
+}
+
+.resumo-dia__texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  min-width: 0;
+}
+
+.resumo-dia__dia-semana {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.resumo-dia__data {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.resumo-dia__pilulas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1);
+  margin-top: 2px;
+}
+
+.pilula {
+  background: var(--pilula-fundo);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  padding: var(--e-1) var(--e-3);
+  border-radius: var(--raio-pill);
+}
+
+.resumo-dia__contador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.resumo-dia__circulo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.resumo-dia__legenda {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+/* ---- Lista de aulas ---- */
+.lista-aulas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+}
+
+.lista-aulas__cabecalho {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: var(--e-2);
+  padding: 0 2px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.lista-aulas__cabecalho span:first-child {
+  text-align: left;
+}
+.lista-aulas__cabecalho span:nth-child(2) {
+  text-align: center;
+}
+.lista-aulas__cabecalho span:last-child {
+  text-align: right;
+}
+
+.linha-aula {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: var(--e-2);
+  align-items: center;
+}
+
+.linha-aula__hora {
+  font-size: 13px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+/* ---- Intervalo ---- */
+.intervalo {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: var(--e-2);
+  align-items: center;
+  padding: var(--e-1) 0;
+}
+
+.intervalo__hora {
+  font-size: 13px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.intervalo__meio {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.intervalo__linha {
+  flex: 1;
+  height: 1px;
+  background: var(--borda);
+}
+
+.intervalo__texto {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--texto-suave);
+  letter-spacing: 0.08em;
+}
+
+/* ---- Card de uma aula ---- */
+.card-aula {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-left: 4px solid var(--cor-turma);
+  border-radius: var(--raio-card-sm);
+  overflow: hidden;
+  box-shadow: var(--sombra-card);
+  transition: border-color 0.15s ease;
+}
+
+.card-aula--aberta {
+  border-color: var(--ink);
+}
+
+.card-aula__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: var(--e-3);
+  text-align: left;
+}
+
+.card-aula__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-aula__disciplina {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.card-aula--aberta .card-aula__disciplina {
+  color: var(--ink);
+}
+
+.card-aula__turma {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.card-aula__check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--secundaria);
+  color: var(--branco);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-aula__seta {
+  color: var(--texto-suave);
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.card-aula--aberta .card-aula__seta {
+  transform: rotate(180deg);
+  color: var(--ink);
+}
+
+.card-aula__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  padding: 0 var(--e-3) var(--e-3);
+}
+
+.btn-pilula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  width: 100%;
+  border-radius: var(--raio-pill);
+  padding: var(--e-3);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ação secundária: outline ink */
+.btn-pilula--contorno {
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+}
+
+/* ação PRINCIPAL da tela: primária sólida (#0D21A1) */
+.btn-pilula--solido {
+  border: 1.5px solid var(--primaria);
+  background: var(--primaria);
+  color: var(--sobre-primaria);
+}
+
+/* ---- Estado de erro ---- */
+.estado-erro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-3);
+  padding: var(--e-6) var(--e-2);
+  text-align: center;
+}
+
+.estado-erro__msg {
+  font-size: 14px;
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+.estado-erro__botao {
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  border-radius: var(--raio-pill);
+  padding: var(--e-3) var(--e-5);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---- Estado vazio ---- */
+.estado-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-6) var(--e-2);
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.estado-vazio__icone {
+  color: var(--secundaria);
+}
+
+.estado-vazio__texto {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ---- Skeleton (carregando) ---- */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+
+.skeleton__bloco {
+  height: 56px;
+  border-radius: var(--raio-card-sm);
+  background: linear-gradient(
+    90deg,
+    var(--borda) 25%,
+    var(--superficie) 37%,
+    var(--borda) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-brilho 1.2s ease infinite;
+}
+
+.skeleton__bloco--resumo {
+  height: 92px;
+  border-radius: var(--raio-card);
+}
+
+@keyframes skeleton-brilho {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* ---- Páginas provisórias (presença / diário / solicitações / registros) ---- */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  padding: var(--e-6) var(--e-2);
+  color: var(--texto-suave);
+}
+
+.placeholder h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--texto);
+  margin: 0;
+}
+
+.placeholder code {
+  background: var(--pilula-fundo);
+  color: var(--ink);
+  padding: 2px 6px;
+  border-radius: var(--raio-badge);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lista de presença                                                   */
+/* ------------------------------------------------------------------ */
+.lista-presenca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+}
+
+/* Card da data da aula */
+.card-data-aula {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-1);
+  background: var(--superficie);
+  border-radius: var(--raio-card);
+  padding: var(--e-4);
+  box-shadow: var(--sombra-card);
+}
+
+.card-data-aula__rotulo {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+.card-data-aula__valor {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+/* Tabela de alunos */
+.tabela-alunos {
+  background: var(--superficie);
+  border-radius: var(--raio-card);
+  padding: var(--e-3) var(--e-4);
+  box-shadow: var(--sombra-card);
+}
+
+.tabela-alunos__cabecalho,
+.linha-aluno {
+  display: grid;
+  grid-template-columns: 1fr 44px 76px;
+  gap: var(--e-2);
+  align-items: center;
+}
+
+.tabela-alunos__cabecalho {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  padding-bottom: var(--e-2);
+  border-bottom: 1px solid var(--borda);
+}
+
+.col-centro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.linha-aluno {
+  padding: var(--e-3) 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+.linha-aluno:last-child {
+  border-bottom: none;
+}
+
+.linha-aluno__nome {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-width: 0;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--pilula-fundo);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.nome-aluno {
+  font-size: 14px;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.nome-aluno--atencao {
+  color: var(--alerta-atencao);
+  font-weight: 600;
+}
+
+.nome-aluno--limite {
+  color: var(--alerta-limite);
+  font-weight: 600;
+}
+
+/* Coluna P (presença) */
+.presenca-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--borda);
+  background: transparent;
+  color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.presenca-btn--on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--branco);
+}
+
+.presenca-btn:disabled {
+  cursor: default;
+}
+
+.presenca-btn:not(:disabled):hover {
+  border-color: var(--ink);
+}
+
+/* Coluna Freq. */
+.freq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-1);
+}
+
+.freq__barra {
+  width: 72px;
+  height: 6px;
+  border-radius: var(--raio-pill);
+  background: var(--pilula-fundo);
+  overflow: hidden;
+}
+
+.freq__preenchido {
+  height: 100%;
+  border-radius: var(--raio-pill);
+}
+
+.freq__preenchido--normal {
+  background: var(--ink);
+}
+.freq__preenchido--atencao {
+  background: var(--alerta-atencao);
+}
+.freq__preenchido--limite {
+  background: var(--alerta-limite);
+}
+
+.freq__valor {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--texto);
+}
+.freq__valor--atencao {
+  color: var(--alerta-atencao);
+}
+.freq__valor--limite {
+  color: var(--alerta-limite);
+}
+
+/* Botão editar/cancelar */
+.btn-editar {
+  width: 100%;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  border-radius: var(--raio-pill);
+  padding: var(--e-3);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Observações */
+.observacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+}
+
+.observacoes__titulo {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+.observacoes__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  background: var(--superficie);
+  border-radius: var(--raio-card-sm);
+  padding: var(--e-4);
+  box-shadow: var(--sombra-card);
+}
+
+.observacoes__item {
+  margin: 0;
+  font-size: 13px;
+  color: var(--texto);
+}
+
+.observacoes__item--regra {
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+/* Botão enviar */
+.btn-enviar {
+  width: 100%;
+  height: 56px;
+  border: none;
+  background: var(--primaria);
+  color: var(--sobre-primaria);
+  border-radius: var(--raio-pill);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.btn-enviar:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
