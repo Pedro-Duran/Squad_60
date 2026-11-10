@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate, useSearchParams } from "react-router"
+import { useSearchParams } from "react-router"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,9 +17,6 @@ export default function PesquisarAluno() {
   const [erroBusca, setErroBusca] = useState("")
   const [tentativaPesquisa, setTentativaPesquisa] = useState(0)
   const busca = searchParams.get("busca") || ""
-  const navigate = useNavigate()
-  const location = useLocation()
-  const voltarPara = `${location.pathname}${location.search}`
 
   useEffect(() => {
     let ativo = true
@@ -39,10 +36,6 @@ export default function PesquisarAluno() {
       })
       .then((encontrados) => {
         if (!ativo || !encontrados) return
-        if (encontrados.length === 1) {
-          navigate(`/dge/alunos/${encontrados[0].id}`, { state: { from: voltarPara } })
-          return
-        }
         setResultado(encontrados)
       })
       .catch(() => {
@@ -55,7 +48,7 @@ export default function PesquisarAluno() {
     return () => {
       ativo = false
     }
-  }, [busca, navigate, tentativaPesquisa, voltarPara])
+  }, [busca, tentativaPesquisa])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -70,6 +63,8 @@ export default function PesquisarAluno() {
 
     setAvisoVazio(false)
     setBuscando(true)
+    setResultado(null)
+    setErroBusca("")
     setTentativaPesquisa((tentativa) => tentativa + 1)
     setSearchParams({ busca: textoBusca })
   }

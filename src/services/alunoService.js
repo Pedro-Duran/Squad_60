@@ -4,23 +4,20 @@ import { simularRequisicao } from "@/services/mockUtils"
 
 export function pesquisarAlunos(termo) {
   return simularRequisicao(() => {
-    const digitos = somenteDigitos(termo)
-    const busca = termo.trim()
-    const buscaPorMatricula = alunos.filter(
-      (aluno) => aluno.matricula === busca || aluno.matricula === digitos,
-    )
-
-    if (buscaPorMatricula.length > 0) return buscaPorMatricula
-
-    if (digitos.length === 11) {
-      return alunos.filter((aluno) => aluno.cpf === digitos)
-    }
-
-    const buscaPorNome = normalizarTexto(termo)
-    if (!buscaPorNome) return []
+    const busca = normalizarTexto(termo)
+    const buscaNumerica = /^\d[\d\s()./-]*$/.test(termo.trim())
+    const digitos = buscaNumerica ? somenteDigitos(termo) : ""
+    if (!busca && !digitos) return []
 
     return alunos
-      .filter((aluno) => normalizarTexto(aluno.nome).includes(buscaPorNome))
+      .filter((aluno) => {
+        const nomeCorresponde = busca && normalizarTexto(aluno.nome).includes(busca)
+        const identificadorCorresponde =
+          digitos &&
+          (aluno.matricula.includes(digitos) || somenteDigitos(aluno.cpf).includes(digitos))
+
+        return nomeCorresponde || identificadorCorresponde
+      })
       .sort((alunoA, alunoB) => alunoA.nome.localeCompare(alunoB.nome))
   })
 }
