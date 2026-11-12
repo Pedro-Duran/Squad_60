@@ -318,8 +318,9 @@ textarea {
 
 .home-page,
 .page-shell {
-  width: min(100%, 440px);
+  width: min(100%, 1200px);
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   background: #f4f4f4;
   color: var(--home-navy);
@@ -451,6 +452,7 @@ textarea {
 
 .reposition-section {
   margin-top: 24px;
+  min-width: 0;
 }
 
 .section-header {
@@ -601,7 +603,6 @@ textarea {
 .primary-action,
 .primary-button,
 .secondary-button,
-.reposition-action,
 .approve-button,
 .reject-button {
   border: 0;
@@ -619,48 +620,6 @@ textarea {
   padding: 14px 18px;
   font-size: 0.95rem;
   box-shadow: 0 8px 16px rgb(31 67 178 / 20%);
-}
-
-.reposition-action {
-  margin-top: 12px;
-  padding: 10px 12px;
-  background: #eef4ff;
-  color: var(--home-blue-strong);
-  width: 100%;
-}
-
-.bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  width: min(100%, 440px);
-  padding: 8px 12px max(10px, env(safe-area-inset-bottom));
-  border: 0;
-  border-radius: 0;
-  background: #071a3a;
-  box-shadow: 0 -4px 12px rgb(15 31 53 / 12%);
-}
-
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 0;
-  background: transparent;
-  color: #a7b3d1;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 8px 4px;
-}
-
-.bottom-nav-item--active {
-  color: white;
 }
 
 .empty-state {
@@ -837,20 +796,44 @@ textarea {
   grid-column: 1 / -1;
 }
 
-.logout-button {
-  position: fixed;
-  right: 12px;
-  bottom: 92px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid rgba(7, 26, 58, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--home-navy);
-  padding: 8px 12px;
-  font-size: 0.76rem;
-  font-weight: 700;
+
+@media (min-width: 720px) {
+  .home-header {
+    padding: 28px 36px 24px;
+  }
+
+  .home-main,
+  .manager-main {
+    padding: 28px 36px 40px;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .reposition-list,
+  .manager-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .page-header {
+    padding: 24px 36px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .home-main,
+  .manager-main {
+    padding-right: 56px;
+    padding-left: 56px;
+  }
+
+  .reposition-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 360px) {

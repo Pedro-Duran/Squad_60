@@ -1,19 +1,12 @@
 ﻿import {
-  Bell,
   CalendarDays,
   CheckCircle2,
-  ChevronRight,
   Clock3,
-  Home,
-  ListChecks,
-  NotebookText,
   Search,
-  UserRound,
   XCircle,
 } from "lucide-react"
 import { useMemo, useState } from "react"
-import { Navigate, useNavigate } from "react-router"
-import { useAuth } from "@/hooks/useAuth"
+import { useNavigate } from "react-router"
 
 const dadosBase = [
   {
@@ -90,7 +83,7 @@ function statusVariant(status) {
   return "status-solicitada"
 }
 
-function ReposicaoCard({ item, onMarcar }) {
+function ReposicaoCard({ item }) {
   return (
     <article className="reposition-card">
       <div className={`reposition-accent ${statusVariant(item.status)}`} />
@@ -124,25 +117,13 @@ function ReposicaoCard({ item, onMarcar }) {
           </span>
         </div>
 
-        {item.status === "Solicitada" && (
-          <button type="button" className="reposition-action" onClick={() => onMarcar(item.id)}>
-            Marcar reposição
-          </button>
-        )}
       </div>
     </article>
   )
 }
 
 export function ProfessorHome() {
-  const { usuario, sair } = useAuth()
   const navigate = useNavigate()
-
-  if (!usuario) {
-    return <Navigate to="/coordenador" replace />
-  }
-
-  const primeiroNome = usuario.nome?.split(" ")[0] ?? "Professor"
   const resumoPadrao = [
     { id: "aulas", label: "Aulas pendentes", valor: 4, destaque: true },
     { id: "reposicoes", label: "Reposições agendadas", valor: 7 },
@@ -160,19 +141,9 @@ export function ProfessorHome() {
 
         <div className="home-header-main">
           <div className="home-user-copy">
-            <p className="home-greeting">Olá, {primeiroNome}!</p>
+            <p className="home-greeting">Painel do coordenador</p>
             <p className="home-date">{formatarDataExtenso()}</p>
           </div>
-
-          <button
-            type="button"
-            className="home-notification-button"
-            aria-label="Notificações"
-            onClick={() => navigate("/professor/gerenciar")}
-          >
-            <Bell size={18} />
-            <span className="home-notification-badge">3</span>
-          </button>
         </div>
       </header>
 
@@ -191,38 +162,21 @@ export function ProfessorHome() {
 
         <section className="reposition-section">
           <div className="section-header">
-            <h2>Próximas reposições</h2>
-            <button type="button" className="section-link" onClick={() => navigate("/professor/gerenciar")}>
-              Ver todas
-              <ChevronRight size={16} />
-            </button>
+            <h2>Solicitações de reposição</h2>
           </div>
 
           <div className="reposition-list">
-            {dadosBase.slice(0, 3).map((item) => (
-              <ReposicaoCard key={item.id} item={item} onMarcar={() => navigate("/professor/gerenciar")} />
+            {dadosBase.filter((item) => item.status === "Solicitada").map((item) => (
+              <ReposicaoCard key={item.id} item={item} />
             ))}
           </div>
         </section>
 
-        <button type="button" className="primary-action" onClick={() => navigate("/professor/gerenciar")}>
+        <button type="button" className="primary-action" onClick={() => navigate("/coordenador/reposicoes")}>
           Gerenciar reposições
         </button>
       </main>
 
-      <nav className="bottom-nav" aria-label="Navegação principal">
-        {[{ label: "Início", active: true, icon: Home }, { label: "Solicitações", active: false, icon: ListChecks }, { label: "Registros", active: false, icon: NotebookText }].map(({ label, active, icon: Icon }) => (
-          <button key={label} type="button" className={`bottom-nav-item ${active ? "bottom-nav-item--active" : ""}`}>
-            <Icon size={18} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
-
-      <button type="button" className="logout-button" onClick={sair}>
-        <UserRound size={14} />
-        Sair
-      </button>
     </div>
   )
 }
@@ -267,7 +221,7 @@ export function GerenciarReposicoes() {
   return (
     <div className="page-shell page-shell--manager">
       <header className="page-header">
-        <button type="button" className="back-link" onClick={() => navigate("/professor")}>
+        <button type="button" className="back-link" onClick={() => navigate("/coordenador")}>
           ← Voltar
         </button>
         <h1>Gerenciar reposições</h1>
