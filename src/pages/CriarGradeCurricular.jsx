@@ -1,0 +1,165 @@
+import { useState } from "react"
+import { ArrowLeft, BookOpen, CalendarDays, ChevronDown, ClipboardList, FolderOpen, Home, MoreVertical } from "lucide-react"
+import { Link, useLocation, useNavigate } from "react-router"
+import logo from "../assets/Seduc-Logo-Branco-Negativo 1.png"
+import "./CriarGradeCurricular.css"
+
+const disciplinasIniciais = [
+  { nome: "Língua Portuguesa", horas: 120 },
+  { nome: "Matemática", horas: 120 },
+  { nome: "Programação", horas: 80 },
+  { nome: "História", horas: 80 },
+]
+const turmas = {
+  "Ensino Médio": ["1º ano · Manhã", "2º ano · Manhã", "3º ano · Tarde"],
+  "Ensino Fundamental": ["6º ano · Manhã", "7º ano · Tarde", "8º ano · Manhã", "9º ano · Tarde"],
+}
+const anos = [2025, 2026, 2027]
+
+function Campo({ titulo, valor, alterar, opcoes, Icone = ChevronDown, desabilitado }) {
+  return (
+    <label className="grade-campo">
+      {titulo}
+      <span>
+        <select value={valor} onChange={(evento) => alterar(evento.target.value)} disabled={desabilitado}>
+          <option value="">Selecione</option>
+          {opcoes.map((opcao) => <option key={opcao}>{opcao}</option>)}
+        </select>
+        <Icone size={18} aria-hidden="true" />
+      </span>
+    </label>
+  )
+}
+
+export default function CriarGradeCurricular() {
+  const navigate = useNavigate()
+  const { state } = useLocation()
+  const inicio = state?.origem ?? "/coordenador"
+  const [modalidade, setModalidade] = useState("")
+  const [ano, setAno] = useState("")
+  const [turma, setTurma] = useState("")
+  const [disciplinas, setDisciplinas] = useState(disciplinasIniciais)
+  const [menu, setMenu] = useState(null)
+  const [edicao, setEdicao] = useState(null)
+  const [aviso, setAviso] = useState("")
+  const total = disciplinas.reduce((soma, item) => soma + item.horas, 0)
+  const podeSalvar = Boolean(modalidade && ano && turma)
+  const voltar = () => state?.origem ? navigate(-1) : navigate(inicio, { replace: true })
+
+  function salvar() {
+    if (!podeSalvar) return
+    try {
+      const chave = JSON.stringify([modalidade, ano, turma])
+      localStorage.setItem(`squad60:grade:${chave}`, JSON.stringify({ modalidade, ano, turma, disciplinas }))
+      setAviso("Grade salva com sucesso.")
+    } catch {
+      setAviso("Não foi possível salvar a grade.")
+    }
+  }
+
+  function confirmarDisciplina(evento) {
+    evento.preventDefault()
+    const nome = edicao.nome.trim()
+    const horas = Number(edicao.horas)
+    if (!nome || !Number.isSafeInteger(horas) || horas < 1) return
+    const item = { nome, horas }
+    setDisciplinas((lista) => edicao.indice === null
+      ? [...lista, item]
+      : lista.map((anterior, indice) => indice === edicao.indice ? item : anterior))
+    setEdicao(null)
+    setAviso("")
+  }
+
+  return (
+    <div className="grade-page">
+      <header className="grade-header">
+        <div>
+          <button type="button" aria-label="Voltar" onClick={voltar}><ArrowLeft size={22} /></button>
+          <img src={logo} alt="SEDUC · SERGIPE" />
+        </div>
+        <h1>Criar Grade Curricular</h1>
+      </header>
+      <main className="grade-main">
+        <div className="grade-card grade-form">
+          <Campo titulo="Modalidade" valor={modalidade} opcoes={Object.keys(turmas)} alterar={(valor) => {
+            setModalidade(valor)
+            setTurma("")
+            setAviso("")
+          }} />
+          <Campo titulo="Ano Letivo" valor={ano} opcoes={anos} Icone={CalendarDays} alterar={(valor) => {
+            setAno(valor)
+            setAviso("")
+          }} />
+          <Campo titulo="Turma" valor={turma} opcoes={turmas[modalidade] ?? []} desabilitado={!modalidade} alterar={(valor) => {
+            setTurma(valor)
+            setAviso("")
+          }} />
+        </div>
+        <section aria-labelledby="grade-disciplinas">
+          <div className="grade-section-heading">
+            <h2 id="grade-disciplinas">Disciplinas da grade</h2>
+            <button type="button" onClick={() => { setMenu(null); setEdicao({ indice: null, nome: "", horas: "" }) }}>Adicionar disciplina</button>
+          </div>
+          <ul className="grade-lista">
+            {disciplinas.map((item, indice) => (
+              <li key={indice} className="grade-card grade-disciplina">
+                <span className="grade-livro"><BookOpen size={19} /></span>
+                <span>{item.nome}</span>
+                <strong>{item.horas}h</strong>
+                <button type="button" aria-label={`Ações de ${item.nome}`} aria-expanded={menu === indice}
+                  onClick={() => setMenu(menu === indice ? null : indice)}><MoreVertical size={20} /></button>
+                {menu === indice && (
+                  <div className="grade-menu" onKeyDown={(evento) => {
+                    if (evento.key === "Escape") {
+                      evento.currentTarget.previousElementSibling.focus()
+                      setMenu(null)
+                    }
+                  }}>
+                    <button type="button" onClick={() => { setEdicao({ ...item, indice }); setMenu(null) }}>Editar carga horária</button>
+                    <button type="button" onClick={() => {
+                      setEdicao(null)
+                      setDisciplinas((lista) => lista.filter((_, posicao) => posicao !== indice))
+                      setMenu(null)
+                      setAviso("")
+                    }}>Remover</button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+          {edicao && (
+            <form className="grade-card grade-form" onSubmit={confirmarDisciplina}>
+              {edicao.indice === null && (
+                <label className="grade-campo">Nome da disciplina
+                  <input required value={edicao.nome} onChange={(evento) => setEdicao({ ...edicao, nome: evento.target.value })} />
+                </label>
+              )}
+              <label className="grade-campo">Carga horária (h)
+                <input required type="number" min="1" step="1" value={edicao.horas}
+                  onChange={(evento) => setEdicao({ ...edicao, horas: evento.target.value })} />
+              </label>
+              <div className="grade-acoes">
+                <button type="button" onClick={() => setEdicao(null)}>Cancelar edição</button>
+                <button type="submit">Confirmar</button>
+              </div>
+            </form>
+          )}
+        </section>
+        <div className="grade-total"><span>Carga horária total</span><strong aria-live="polite">{total}h</strong></div>
+        <div className="grade-acoes">
+          <button type="button" onClick={voltar}>Cancelar</button>
+          <button type="button" disabled={!podeSalvar} onClick={salvar}>Salvar grade</button>
+        </div>
+        {aviso && <p role="status">{aviso}</p>}
+      </main>
+      <footer className="grade-footer">
+        <small>©2026 Desenvolvido por SQUAD 60</small>
+        <nav aria-label="Navegação principal">
+          <Link to={inicio}><Home size={20} />Início</Link>
+          <span aria-current="page"><ClipboardList size={20} />Solicitações</span>
+          <Link to="/registros" state={{ origem: inicio }}><FolderOpen size={20} />Registros</Link>
+        </nav>
+      </footer>
+    </div>
+  )
+}
