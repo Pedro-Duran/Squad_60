@@ -1,0 +1,122 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+:root {
+  font-family: 'Geist Variable', Arial, sans-serif;
+  color: #151c2b;
+  background: #e9edf4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  --navy: #001638;
+  --blue: #1726ad;
+  --muted: #737d8e;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
+body { min-height: 100vh; }
+button { font: inherit; }
+button:focus-visible { outline: 3px solid #8ba5ff; outline-offset: 3px; }
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: #e9edf4;
+}
+
+.phone-screen {
+  width: min(100%, 430px);
+  min-height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #fff;
+  background: var(--navy);
+  box-shadow: 0 0 35px rgb(14 29 55 / 10%);
+}
+
+.screen-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+.screen-scroll::-webkit-scrollbar { display: none; }
+.hub-header { padding: 27px 32px 0; }
+.brand-row { display: flex; align-items: center; gap: 12px; min-height: 45px; }
+.back-button {
+  width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center;
+  border: 1px solid rgb(255 255 255 / 25%); border-radius: 50%; color: #fff;
+  background: rgb(255 255 255 / 8%); cursor: pointer;
+}
+.brand-name { color: #d0d8e6; font-size: 14px; font-weight: 750; letter-spacing: .01em; white-space: nowrap; }
+.electronic-seal {
+  margin-left: auto; padding: 8px 11px; border-radius: 10px; color: #fff;
+  background: #172c4d; font-size: 11px; font-weight: 800; white-space: nowrap;
+}
+.hub-header h1 { margin: 25px 0 15px; font-size: clamp(27px, 7vw, 36px); line-height: 1.12; font-weight: 780; letter-spacing: -.035em; }
+.header-divider { height: 1px; background: rgb(255 255 255 / 13%); }
+.hub-content { padding: 0 32px 28px; }
+.greeting { margin: 29px 0 31px; }
+.user-role { margin: 0 0 9px; color: #aebbd0; font-size: 12px; font-weight: 750; letter-spacing: .025em; }
+.greeting h2 { margin: 0; color: #fff; font-size: clamp(27px, 7vw, 35px); line-height: 1.15; font-weight: 780; letter-spacing: -.035em; }
+.main-card { padding: 24px 20px 20px; border-radius: 21px; color: #151c2b; background: #fff; }
+.planning-year { margin: 0 0 10px; color: var(--blue); font-size: 13px; font-weight: 800; }
+.main-card h2 { margin: 0 0 8px; font-size: 23px; line-height: 1.2; font-weight: 780; letter-spacing: -.025em; }
+.main-description { margin: 0; color: #737b8b; font-size: 15px; line-height: 1.42; }
+.create-button {
+  width: 100%; min-height: 58px; margin-top: 19px; padding: 12px 14px;
+  display: flex; align-items: center; justify-content: center; gap: 11px;
+  border: 0; border-radius: 999px; color: #fff; background: var(--blue);
+  font-size: 15px; font-weight: 750; cursor: pointer; transition: background .15s ease, transform .15s ease;
+}
+.create-button:hover { background: #101d91; }
+.create-button:active, .quick-card:active { transform: scale(.99); }
+.quick-access { margin-top: 17px; }
+.quick-access > h2 { margin: 0 0 12px; color: #d2d9e5; font-size: 17px; font-weight: 750; }
+.quick-list { display: grid; gap: 10px; }
+.quick-card {
+  width: 100%; min-height: 72px; padding: 13px 16px; display: flex; align-items: center; gap: 13px;
+  border: 0; border-radius: 15px; text-align: left; color: #151c2b; background: #fff;
+  cursor: pointer; transition: transform .15s ease, box-shadow .15s ease;
+}
+.quick-card:hover { box-shadow: 0 5px 18px rgb(0 0 0 / 10%); }
+.quick-icon { width: 43px; height: 43px; flex: 0 0 43px; display: grid; place-items: center; border-radius: 50%; color: var(--blue); background: #edf0ff; }
+.quick-copy { min-width: 0; display: flex; flex: 1; flex-direction: column; gap: 4px; }
+.quick-copy strong { font-size: 15px; line-height: 1.2; font-weight: 750; }
+.quick-copy > span { color: #778092; font-size: 13px; line-height: 1.2; }
+.quick-chevron { flex: 0 0 auto; color: #747e8e; }
+.bottom-area { flex: 0 0 auto; padding: 9px 20px max(10px, env(safe-area-inset-bottom)); color: #778092; background: #fff; border-top: 1px solid #dfe3ea; }
+.bottom-nav { display: grid; grid-template-columns: repeat(2, 1fr); }
+.nav-item { min-height: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 0; color: #a0a8b5; background: transparent; font-size: 12px; font-weight: 550; cursor: pointer; }
+.nav-item.active { color: var(--blue); font-weight: 750; }
+.copyright { margin: 9px 0 7px; text-align: center; color: #747d8d; font-size: 11px; }
+.home-indicator { width: 105px; height: 4px; margin: 0 auto; border-radius: 99px; background: #b8bbc1; }
+
+.access-denied, .destination-view { width: min(100%, 430px); min-height: 100vh; padding: 48px 30px; color: #fff; background: var(--navy); }
+.access-denied { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.access-icon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: #172c4d; }
+.access-denied h1, .destination-view h1 { margin: 22px 0 8px; font-size: 28px; }
+.access-denied p, .destination-view p { color: #c4cede; line-height: 1.55; }
+.destination-back { display: inline-flex; align-items: center; gap: 8px; padding: 9px 0; border: 0; color: #fff; background: transparent; cursor: pointer; }
+.eyebrow { display: block; margin-top: 42px; color: #c4cede; font-size: 13px; font-weight: 750; }
+.destination-note { margin-top: 28px; padding: 17px; border-radius: 14px; color: #d1d9e7; background: #172c4d; font-size: 14px; line-height: 1.5; }
+
+@media (min-width: 700px) {
+  .app-shell { padding: 24px; }
+  .phone-screen { min-height: min(900px, calc(100vh - 48px)); height: min(900px, calc(100vh - 48px)); border-radius: 30px; }
+  .hub-header { padding-top: 30px; }
+}
+@media (max-height: 760px) and (max-width: 699px) {
+  .hub-header { padding-top: 17px; }
+  .hub-header h1 { margin-top: 16px; font-size: 29px; }
+  .greeting { margin: 20px 0 22px; }
+  .main-card { padding: 19px 18px 17px; }
+  .main-description { font-size: 14px; }
+  .create-button { min-height: 52px; margin-top: 14px; }
+  .quick-card { min-height: 65px; }
+}
