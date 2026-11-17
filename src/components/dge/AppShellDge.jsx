@@ -1,5 +1,6 @@
 import { ArrowLeft, BookOpen, CalendarDays, House } from "lucide-react"
 import { Link } from "react-router"
+import { useAuth } from "@/hooks/useAuth"
 
 const ITENS_RODAPE_DGE = [
   { icone: House, titulo: "Início", rota: "/dge", ativo: true },
@@ -14,6 +15,7 @@ export default function AppShell({
   voltarPara,
   itensRodape = ITENS_RODAPE_DGE,
 }) {
+  const { sair } = useAuth()
   const saudacao = usuario
     ? `Seja bem-vind${usuario.genero === "F" ? "a" : "o"}, ${usuario.nomeCurto}!`
     : "Seja bem-vinda!"
@@ -33,10 +35,15 @@ export default function AppShell({
                 SEDUC · SERGIPE
               </Link>
             ) : (
-              <span className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-wide">
+              <Link
+                aria-label="Sair e voltar ao login"
+                className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-wide"
+                onClick={sair}
+                to="/login"
+              >
                 <ArrowLeft aria-hidden="true" size={16} strokeWidth={2.5} />
                 SEDUC · SERGIPE
-              </span>
+              </Link>
             )}
             <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-semibold">
               <span aria-hidden="true" className="size-1.5 rounded-full bg-emerald-300" />

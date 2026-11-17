@@ -76,10 +76,8 @@ export default function App() {
               element={<Navigate to="/professor/reposicoes" replace />}
             />
           </Route>
-          <Route element={<RotaProtegida perfil="coordenador" />}>
-            <Route path="/coordenador" element={<EmConstrucao />} />
-          </Route>
-          <Route element={<RotaProtegida perfil="dge" />}>
+          <Route path="/coordenador" element={<Navigate to="/dge" replace />} />
+          <Route element={<RotaProtegida perfil={["dge", "coordenador"]} />}>
             <Route path="/dge" element={<MenuDGE />} />
             <Route path="/dge/alunos" element={<PesquisarAluno />} />
             <Route path="/dge/alunos/gerenciar" element={<GerenciarAlunos />} />

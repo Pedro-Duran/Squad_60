@@ -1,6 +1,6 @@
 export const ROTA_INICIAL = {
   professor: "/professor",
-  coordenador: "/coordenador",
+  coordenador: "/dge",
   dge: "/dge",
   secretaria: "/secretaria",
 }
