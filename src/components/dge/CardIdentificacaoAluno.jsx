@@ -11,7 +11,10 @@ export default function CardIdentificacaoAluno({ aluno }) {
       <p className="mt-1 text-[13px] text-muted-foreground">
         Matrícula nº {aluno.matricula}
       </p>
-      <Badge variant="status" className="mt-3 px-3 font-semibold tracking-wide">
+      <Badge
+        variant="outline"
+        className="mt-3 border-success-border bg-success px-3 font-semibold tracking-wide text-success-foreground"
+      >
         {aluno.situacao.toUpperCase()}
       </Badge>
     </section>

@@ -1,5 +1,6 @@
 import alunos from "@/mocks/alunos.json"
 import { normalizarTexto, somenteDigitos } from "@/lib/texto"
+import { registrarAlteracoesAluno } from "@/services/historicoService"
 import { simularRequisicao } from "@/services/mockUtils"
 
 export function pesquisarAlunos(termo) {
@@ -35,7 +36,7 @@ export function atualizarAluno(id, dados) {
     const aluno = alunos.find((item) => item.id === id)
     if (!aluno) throw new Error("Aluno não encontrado")
 
-    Object.assign(aluno, {
+    const dadosAtualizados = {
       nome: dados.nome,
       dataNascimento: dados.dataNascimento,
       serie: dados.serie,
@@ -43,7 +44,10 @@ export function atualizarAluno(id, dados) {
       turno: dados.turno,
       modalidade: dados.modalidade,
       situacao: dados.situacao,
-    })
+    }
+
+    registrarAlteracoesAluno(aluno, dadosAtualizados)
+    Object.assign(aluno, dadosAtualizados)
 
     return aluno
   })

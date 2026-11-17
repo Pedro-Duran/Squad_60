@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes, Link, useParams } from "react-r
 import PesquisarAluno from "@/pages/dge/PesquisarAluno"
 import FichaAluno from "@/pages/dge/FichaAluno"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
+import HistoricoAluno from "@/pages/dge/HistoricoAluno"
 import MenuDGE from "@/pages/dge/MenuDGE"
 
 function DestinoPendente({ titulo }) {
@@ -34,6 +35,7 @@ export default function App() {
           element={<DestinoPendente titulo="Gerenciar Alunos" />}
         />
         <Route path="/dge/alunos/:id/editar" element={<EditarCadastro />} />
+        <Route path="/dge/alunos/:id/historico" element={<HistoricoAluno />} />
         <Route path="/dge/alunos/:id" element={<FichaAluno />} />
         <Route path="/dge/grade" element={<DestinoPendente titulo="Grade Curricular" />} />
         <Route

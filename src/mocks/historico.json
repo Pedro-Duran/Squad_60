@@ -1,0 +1,50 @@
+[
+  {
+    "id": "hist-001",
+    "alunoId": "alu-015",
+    "tipo": "turma",
+    "data": "2026-09-27T14:32:00",
+    "anterior": "2º B",
+    "nova": "3º A — Ensino Médio",
+    "responsavel": {
+      "nome": "Maria Santos",
+      "setor": "Secretaria"
+    }
+  },
+  {
+    "id": "hist-002",
+    "alunoId": "alu-015",
+    "tipo": "situacao",
+    "data": "2026-03-15T09:10:00",
+    "anterior": "Transferido",
+    "nova": "Matriculado",
+    "responsavel": {
+      "nome": "João Oliveira",
+      "setor": "Secretaria"
+    }
+  },
+  {
+    "id": "hist-003",
+    "alunoId": "alu-015",
+    "tipo": "turno",
+    "data": "2026-02-10T11:47:00",
+    "anterior": "Tarde",
+    "nova": "Manhã",
+    "responsavel": {
+      "nome": "Maria Santos",
+      "setor": "Secretaria"
+    }
+  },
+  {
+    "id": "hist-004",
+    "alunoId": "alu-015",
+    "tipo": "matricula",
+    "data": "2026-01-05T08:00:00",
+    "anterior": null,
+    "nova": null,
+    "responsavel": {
+      "nome": "Ana Lima",
+      "setor": "Secretaria"
+    }
+  }
+]
