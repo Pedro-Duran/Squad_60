@@ -33,14 +33,24 @@ export function AbasAlunos({ ativa = "pesquisar", alunoId, voltarPara }) {
   return (
     <header className="bg-navy text-white">
       <div className="flex items-center px-4 pb-1 pt-4 text-xs font-semibold tracking-wider">
-        {alunoId && (
+        {voltarPara ? (
           <Link
-            to={voltarPara || "/dge/alunos"}
+            to={voltarPara}
             aria-label="Voltar"
-            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center"
+            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/15"
           >
             <ArrowLeft aria-hidden="true" className="size-[18px]" />
           </Link>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-label="Voltar ao menu do professor"
+            title="Retorno ao menu do professor estará disponível em breve"
+            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center text-white"
+          >
+            <ArrowLeft aria-hidden="true" className="size-[18px]" />
+          </button>
         )}
         <span>SEDUC · SERGIPE</span>
       </div>
@@ -57,7 +67,7 @@ export function AbasAlunos({ ativa = "pesquisar", alunoId, voltarPara }) {
               <span
                 key={aba.id}
                 aria-disabled="true"
-                className={`${classes} cursor-not-allowed bg-white/15 text-white/60`}
+                className={`${classes} cursor-not-allowed bg-white/15 text-white`}
               >
                 {aba.label}
               </span>

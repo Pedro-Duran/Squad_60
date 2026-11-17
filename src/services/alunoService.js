@@ -29,3 +29,22 @@ export function buscarAlunoPorId(id) {
     return aluno
   })
 }
+
+export function atualizarAluno(id, dados) {
+  return simularRequisicao(() => {
+    const aluno = alunos.find((item) => item.id === id)
+    if (!aluno) throw new Error("Aluno não encontrado")
+
+    Object.assign(aluno, {
+      nome: dados.nome,
+      dataNascimento: dados.dataNascimento,
+      serie: dados.serie,
+      turma: dados.turma,
+      turno: dados.turno,
+      modalidade: dados.modalidade,
+      situacao: dados.situacao,
+    })
+
+    return aluno
+  })
+}

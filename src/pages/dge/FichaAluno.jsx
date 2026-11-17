@@ -6,6 +6,7 @@ import CardIdentificacaoAluno from "@/components/dge/CardIdentificacaoAluno"
 import DadosAcademicos from "@/components/dge/DadosAcademicos"
 import { AbasAlunos } from "@/components/dge/AbasAlunos"
 import DgeAppShell from "@/components/layout/DgeAppShell"
+import AvisoSucesso from "@/components/shared/AvisoSucesso"
 import EstadoErro from "@/components/shared/EstadoErro"
 import { buscarAlunoPorId } from "@/services/alunoService"
 
@@ -45,6 +46,12 @@ export default function FichaAluno() {
       </header>
 
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-4 p-4">
+        {location.state?.successMessage && (
+          <AvisoSucesso>
+            {location.state.successMessage}
+          </AvisoSucesso>
+        )}
+
         {erro && (
           <EstadoErro
             titulo="Erro ao carregar ficha"
@@ -66,7 +73,11 @@ export default function FichaAluno() {
             <Button
               type="button"
               className="h-12 w-full rounded-full"
-              onClick={() => navigate(`/dge/alunos/${id}/editar`)}
+              onClick={() =>
+                navigate(`/dge/alunos/${id}/editar`, {
+                  state: location.state?.from ? { from: location.state.from } : undefined,
+                })
+              }
             >
               <Pencil aria-hidden="true" className="size-4" />
               EDITAR DADOS

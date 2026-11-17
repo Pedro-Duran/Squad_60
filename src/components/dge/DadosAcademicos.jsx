@@ -1,8 +1,8 @@
 const linhasAcademicas = (aluno) => [
-  ["Série/Ano", aluno.turma.split(" ").slice(0, 2).join(" ")],
-  ["Turma", aluno.turma.split(" ").at(-1)],
-  ["Turno", aluno.turno ?? "Manhã"],
-  ["Modalidade", aluno.modalidade ?? "Ensino Médio"],
+  ["Série/Ano", aluno.serie],
+  ["Turma", aluno.turma],
+  ["Turno", aluno.turno],
+  ["Modalidade", aluno.modalidade],
 ]
 
 export default function DadosAcademicos({ aluno }) {

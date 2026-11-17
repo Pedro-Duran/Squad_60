@@ -15,7 +15,7 @@ export function ItemAluno({ aluno }) {
           {aluno.nome}
         </h2>
         <p className="mt-0.5 text-xs text-slate-500">
-          Matrícula: {aluno.matricula} • Turma: {aluno.turma}
+          Matrícula: {aluno.matricula} • Turma: {aluno.serie} {aluno.turma}
         </p>
       </div>
       <ChevronRight className="size-5 shrink-0 text-slate-400 transition-colors group-hover:text-primary" />

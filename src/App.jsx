@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes, Link, useParams } from "react-router"
 import PesquisarAluno from "@/pages/dge/PesquisarAluno"
 import FichaAluno from "@/pages/dge/FichaAluno"
+import EditarCadastro from "@/pages/dge/EditarCadastro"
 
 function DestinoPendente({ titulo }) {
   const { alunoId, secao } = useParams()
@@ -28,6 +29,7 @@ export default function App() {
           path="/dge/alunos/gerenciar"
           element={<DestinoPendente titulo="Gerenciar Alunos" />}
         />
+        <Route path="/dge/alunos/:id/editar" element={<EditarCadastro />} />
         <Route path="/dge/alunos/:id" element={<FichaAluno />} />
         <Route path="/dge/alunos/:alunoId/:secao" element={<DestinoPendente />} />
         <Route path="*" element={<Navigate to="/dge/alunos" replace />} />
