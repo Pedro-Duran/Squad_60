@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router"
 import { CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { formatarSituacao } from "@/lib/texto"
 import {
   Select,
   SelectContent,
@@ -71,7 +72,7 @@ function aplicarMascaraData(valor) {
   return `${digitos.slice(0, 2)}/${digitos.slice(2, 4)}/${digitos.slice(4)}`
 }
 
-function validarFormulario(dados, dataTexto) {
+function validarFormulario(dados, dataTexto, turmaOriginal) {
   const erros = {}
   const camposObrigatorios = [
     ["serie", "Selecione a série/ano."],
@@ -79,7 +80,7 @@ function validarFormulario(dados, dataTexto) {
     ["turno", "Selecione o turno."],
     ["modalidade", "Selecione a modalidade."],
     ["situacao", "Selecione a situação."],
-  ]
+  ].filter(([campo]) => campo !== "turma" || turmaOriginal)
 
   if (!dados.nome.trim()) erros.nome = "Informe o nome completo."
   if (!dataTexto) {
@@ -169,7 +170,7 @@ export default function EditarCadastro() {
 
   async function salvar(event) {
     event.preventDefault()
-    const validacao = validarFormulario(formulario, dataNascimentoTexto)
+    const validacao = validarFormulario(formulario, dataNascimentoTexto, original.turma)
     setErros(validacao)
     setErroSalvar("")
 
@@ -399,8 +400,13 @@ export default function EditarCadastro() {
               <CampoFormulario id="situacao" label="Situação" erro={erros.situacao}>
                 {(erroId) => (
                   <Select
-                    value={formulario.situacao}
-                    onValueChange={(valor) => atualizarCampo("situacao", valor)}
+                    value={formatarSituacao(formulario.situacao, aluno.genero)}
+                    onValueChange={(valor) => {
+                      const situacao = SITUACOES.find(
+                        (opcao) => formatarSituacao(opcao, aluno.genero) === valor
+                      )
+                      atualizarCampo("situacao", situacao || valor)
+                    }}
                   >
                     <SelectTrigger
                       id="situacao"
@@ -412,8 +418,11 @@ export default function EditarCadastro() {
                     </SelectTrigger>
                     <SelectContent>
                       {SITUACOES.map((situacao) => (
-                        <SelectItem key={situacao} value={situacao}>
-                          {situacao}
+                        <SelectItem
+                          key={situacao}
+                          value={formatarSituacao(situacao, aluno.genero)}
+                        >
+                          {formatarSituacao(situacao, aluno.genero)}
                         </SelectItem>
                       ))}
                     </SelectContent>

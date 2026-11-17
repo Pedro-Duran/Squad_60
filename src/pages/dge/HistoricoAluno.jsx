@@ -87,7 +87,7 @@ export default function HistoricoAluno() {
             <p className="text-xs leading-4 text-muted-foreground">
               {registros.length} {registros.length === 1 ? "registro encontrado" : "registros encontrados"}
             </p>
-            <ListaHistorico registros={registros} />
+            <ListaHistorico registros={registros} genero={aluno.genero} />
           </>
         )}
       </main>

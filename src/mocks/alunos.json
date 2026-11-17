@@ -2,7 +2,8 @@
   {
     "id": "alu-001",
     "nome": "Alberto João",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-02-14",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -16,7 +17,8 @@
   {
     "id": "alu-002",
     "nome": "Ana Clara Santos",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2013-06-22",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -30,7 +32,8 @@
   {
     "id": "alu-003",
     "nome": "Bruna Oliveira",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2013-11-03",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -44,7 +47,8 @@
   {
     "id": "alu-004",
     "nome": "Carlos Eduardo Lima",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-04-19",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Tarde",
@@ -58,7 +62,8 @@
   {
     "id": "alu-005",
     "nome": "Daniela Souza",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2014-01-27",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -72,7 +77,8 @@
   {
     "id": "alu-006",
     "nome": "Eduardo Martins",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-08-11",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -86,7 +92,8 @@
   {
     "id": "alu-007",
     "nome": "Fernanda Costa",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2013-12-05",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -100,7 +107,8 @@
   {
     "id": "alu-008",
     "nome": "Gabriel Almeida",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-05-30",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Tarde",
@@ -114,7 +122,8 @@
   {
     "id": "alu-009",
     "nome": "Helena Ferreira",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2014-03-16",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -128,7 +137,8 @@
   {
     "id": "alu-010",
     "nome": "Isabela Rocha",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2013-09-07",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -142,7 +152,8 @@
   {
     "id": "alu-011",
     "nome": "João Pedro Nunes",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-01-12",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -156,7 +167,8 @@
   {
     "id": "alu-012",
     "nome": "Mariana Alves",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2014-04-21",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Tarde",
@@ -170,7 +182,8 @@
   {
     "id": "alu-013",
     "nome": "Pedro Henrique Silva",
-    "dataNascimento": "",
+    "genero": "M",
+    "dataNascimento": "2013-07-24",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Manhã",
@@ -184,7 +197,8 @@
   {
     "id": "alu-014",
     "nome": "Vânia da Silva",
-    "dataNascimento": "",
+    "genero": "F",
+    "dataNascimento": "2013-10-09",
     "serie": "7º Ano",
     "turma": "A",
     "turno": "Tarde",
@@ -198,6 +212,7 @@
   {
     "id": "alu-015",
     "nome": "Lucas Andrade Ferreira",
+    "genero": "M",
     "dataNascimento": "2008-03-15",
     "serie": "3º Ano",
     "turma": "A",

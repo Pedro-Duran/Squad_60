@@ -3,6 +3,7 @@ import PesquisarAluno from "@/pages/dge/PesquisarAluno"
 import FichaAluno from "@/pages/dge/FichaAluno"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
 import HistoricoAluno from "@/pages/dge/HistoricoAluno"
+import GerenciarAlunos from "@/pages/dge/GerenciarAlunos"
 import MenuDGE from "@/pages/dge/MenuDGE"
 
 function DestinoPendente({ titulo }) {
@@ -30,10 +31,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/dge" replace />} />
         <Route path="/dge" element={<MenuDGE />} />
         <Route path="/dge/alunos" element={<PesquisarAluno />} />
-        <Route
-          path="/dge/alunos/gerenciar"
-          element={<DestinoPendente titulo="Gerenciar Alunos" />}
-        />
+        <Route path="/dge/alunos/gerenciar" element={<GerenciarAlunos />} />
         <Route path="/dge/alunos/:id/editar" element={<EditarCadastro />} />
         <Route path="/dge/alunos/:id/historico" element={<HistoricoAluno />} />
         <Route path="/dge/alunos/:id" element={<FichaAluno />} />

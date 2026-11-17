@@ -1,6 +1,6 @@
 const linhasAcademicas = (aluno) => [
   ["Série/Ano", aluno.serie],
-  ["Turma", aluno.turma],
+  ["Turma", aluno.turma || "Sem turma"],
   ["Turno", aluno.turno],
   ["Modalidade", aluno.modalidade],
 ]

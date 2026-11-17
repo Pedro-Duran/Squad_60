@@ -20,3 +20,14 @@ export function iniciaisDoNome(nome) {
   const segunda = partes.length > 1 ? partes[1][0] : ""
   return (primeira + segunda).toUpperCase()
 }
+
+const SITUACOES_FEMININAS = {
+  Matriculado: "Matriculada",
+  Transferido: "Transferida",
+  Evadido: "Evadida",
+  Concluído: "Concluída",
+}
+
+export function formatarSituacao(situacao, genero) {
+  return genero === "F" ? SITUACOES_FEMININAS[situacao] || situacao : situacao
+}

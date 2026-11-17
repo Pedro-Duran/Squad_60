@@ -6,10 +6,13 @@ import CardUsuario from "@/components/shared/CardUsuario"
 import EstadoErro from "@/components/shared/EstadoErro"
 import ItemMenu from "@/components/shared/ItemMenu"
 import { useDados } from "@/hooks/useDados"
-import { buscarGestor } from "@/services/gestorService"
+import { buscarGestor, definirGestorAtivo } from "@/services/gestorService"
 
 const GESTOR_LOGADO_ID = "ges-001"
-const buscarGestorLogado = () => buscarGestor(GESTOR_LOGADO_ID)
+const buscarGestorLogado = () => {
+  definirGestorAtivo(GESTOR_LOGADO_ID)
+  return buscarGestor(GESTOR_LOGADO_ID)
+}
 
 const ATALHOS = [
   {

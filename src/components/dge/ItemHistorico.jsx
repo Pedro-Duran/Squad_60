@@ -1,4 +1,5 @@
 import { Check, Pencil, User } from "lucide-react"
+import { formatarSituacao } from "@/lib/texto"
 
 const TIPOS_REGISTRO = {
   turma: { titulo: "Turma alterada", Icone: Pencil, classeIcone: "bg-primary/10 text-primary" },
@@ -16,13 +17,16 @@ function formatarDataHora(dataIso) {
   return `${dia}/${mes}/${ano} · ${hora}h${minuto}`
 }
 
-function criarDescricao(registro) {
+function criarDescricao(registro, genero) {
   if (registro.tipo === "matricula") return "Registro inicial do aluno no sistema"
+  if (registro.tipo === "situacao") {
+    return `De ${formatarSituacao(registro.anterior, genero)} para ${formatarSituacao(registro.nova, genero)}`
+  }
   if (registro.descricao) return registro.descricao
   return `De ${registro.anterior} para ${registro.nova}`
 }
 
-export default function ItemHistorico({ registro }) {
+export default function ItemHistorico({ registro, genero }) {
   const { titulo, Icone, classeIcone } = TIPOS_REGISTRO[registro.tipo]
 
   return (
@@ -44,7 +48,7 @@ export default function ItemHistorico({ registro }) {
           </time>
         </div>
         <p className="mt-1 text-[13px] leading-5 text-muted-foreground">
-          {criarDescricao(registro)}
+          {criarDescricao(registro, genero)}
         </p>
         <p className="mt-1 flex items-center gap-1.5 text-xs leading-4 text-muted-foreground">
           <User aria-hidden="true" size={13} strokeWidth={1.8} />

@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { iniciaisDoNome } from "@/lib/texto"
+import { formatarSituacao, iniciaisDoNome } from "@/lib/texto"
 
 export default function CardIdentificacaoAluno({ aluno }) {
   return (
@@ -15,7 +15,7 @@ export default function CardIdentificacaoAluno({ aluno }) {
         variant="outline"
         className="mt-3 border-success-border bg-success px-3 font-semibold tracking-wide text-success-foreground"
       >
-        {aluno.situacao.toUpperCase()}
+        {formatarSituacao(aluno.situacao, aluno.genero).toUpperCase()}
       </Badge>
     </section>
   )

@@ -54,11 +54,11 @@ export function AbasAlunos({ ativa = "pesquisar", alunoId, voltarPara }) {
       </div>
       <nav
         aria-label="Navegação de alunos"
-        className="flex gap-2 overflow-x-auto px-4 pb-3 pt-2 whitespace-nowrap"
+        className="flex justify-center gap-1 overflow-x-auto px-4 pb-3 pt-2 whitespace-nowrap"
       >
         {abas.map((aba) => {
           const classes =
-            "inline-flex shrink-0 items-center rounded-full px-2 py-1.5 text-xs font-semibold transition-colors"
+            "inline-flex shrink-0 items-center rounded-full px-1.5 py-1.5 text-[13px] font-semibold transition-colors"
 
           if (!aba.habilitada) {
             return (

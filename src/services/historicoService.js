@@ -1,4 +1,5 @@
 import historico from "@/mocks/historico.json"
+import { obterGestorAtivo } from "@/services/gestorService"
 import { simularRequisicao } from "@/services/mockUtils"
 
 const CAMPOS_TURMA = [
@@ -11,11 +12,6 @@ const CAMPOS_CADASTRO = [
   ["nome", "Nome"],
   ["dataNascimento", "Data de nascimento"],
 ]
-
-const RESPONSAVEL_PADRAO = {
-  nome: "Beatriz Vieira Machado",
-  setor: "Gestão Escolar",
-}
 
 let proximoNumeroRegistro = historico.length
 
@@ -56,6 +52,7 @@ function criarDataLocal() {
 
 function adicionarRegistro(alunoId, tipo, alteracoes, descricao) {
   const primeiroCampo = alteracoes[0]
+  const gestor = obterGestorAtivo()
   proximoNumeroRegistro += 1
   historico.push({
     id: `hist-${Date.now()}-${proximoNumeroRegistro}`,
@@ -65,7 +62,10 @@ function adicionarRegistro(alunoId, tipo, alteracoes, descricao) {
     anterior: primeiroCampo.anterior,
     nova: primeiroCampo.nova,
     ...(descricao ? { descricao } : {}),
-    responsavel: RESPONSAVEL_PADRAO,
+    responsavel: {
+      nome: gestor.nome,
+      setor: gestor.departamento,
+    },
   })
 }
 
