@@ -27,3 +27,35 @@ export function formatarDataAula(data, horario) {
 
   return `${diaSemana.toUpperCase()} · ${dataObj.toLocaleDateString('pt-BR')} · ${horarioAtual}`
 }
+
+function paraTexto(d) {
+  const mes = String(d.getMonth() + 1).padStart(2, '0')
+  const dia = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${mes}-${dia}`
+}
+
+// "2026-09-14", 1 → "2026-09-15"
+export function somarDias(data, dias) {
+  const d = paraDate(data)
+  d.setDate(d.getDate() + dias)
+  return paraTexto(d)
+}
+
+// "2026-09-14" → "Segunda-feira"
+export function nomeDiaSemana(data) {
+  const nome = paraDate(data).toLocaleDateString('pt-BR', { weekday: 'long' })
+  return nome.charAt(0).toUpperCase() + nome.slice(1)
+}
+
+// "2026-09-14" → "SEG"
+export function siglaDiaSemana(data) {
+  return paraDate(data)
+    .toLocaleDateString('pt-BR', { weekday: 'short' })
+    .replace('.', '')
+    .toUpperCase()
+}
+
+// "2026-09-14" → "14 de setembro"
+export function formatarDiaMes(data) {
+  return paraDate(data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })
+}

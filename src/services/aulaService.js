@@ -38,3 +38,12 @@ export function salvarPresencas(aulaId, presencas, observacao) {
     return { aulaId, presencas, observacao }
   })
 }
+
+// Aulas de um professor num dia, em ordem de horário.
+export function listarAulasDoDia(professorId, data) {
+  return simularRequisicao(() =>
+    aulas
+      .filter((aula) => aula.professorId === professorId && aula.data === data)
+      .sort((a, b) => a.horario.localeCompare(b.horario)),
+  )
+}

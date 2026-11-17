@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate } from "react-router"
+import { Link, useNavigate, useSearchParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import CardDataAula from "@/components/professor/CardDataAula"
 import { buscarAula } from "@/services/aulaService"
 import { Home, ClipboardList, NotebookPen, ArrowLeft, Trash2 } from "lucide-react"
 
-const AULA_ATUAL_ID = "aula-001"
+// Sem ?aula= na URL (ex.: aberto pelo menu), usa a primeira aula do mock.
+const AULA_PADRAO_ID = "aula-001"
 
 export default function DiarioEletronico() {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const aulaId = params.get("aula") ?? AULA_PADRAO_ID
   const [aula, setAula] = useState(null)
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(false)
@@ -23,7 +26,7 @@ export default function DiarioEletronico() {
       }
 
       try {
-        const resposta = await buscarAula(AULA_ATUAL_ID)
+        const resposta = await buscarAula(aulaId)
         if (ativo) {
           setAula(resposta)
           setErro(false)
@@ -45,7 +48,7 @@ export default function DiarioEletronico() {
     return () => {
       ativo = false
     }
-  }, [])
+  }, [aulaId])
 
   const listaTarefas = useMemo(() => aula?.tarefas ?? [], [aula])
   const listaTopicos = useMemo(() => aula?.topicos ?? [], [aula])
@@ -242,18 +245,28 @@ export default function DiarioEletronico() {
           aria-label="Navegação principal"
           className="grid grid-cols-3 border-t border-[color:var(--nav-border)] bg-[color:var(--nav-bg)] px-2 py-3 text-[11px] text-[color:var(--nav-text)]"
         >
-          <div className="flex min-w-0 flex-col items-center gap-1">
-            <Home size={18} />
+          <Link
+            to="/professor"
+            className="flex min-w-0 flex-col items-center gap-1"
+          >
+            <Home size={18} aria-hidden="true" />
             <span className="whitespace-nowrap">Início</span>
-          </div>
-          <div className="flex min-w-0 flex-col items-center gap-1 text-[color:var(--nav-active)]">
-            <ClipboardList size={18} />
+          </Link>
+          <Link
+            to="/professor/solicitacoes"
+            className="flex min-w-0 flex-col items-center gap-1"
+          >
+            <ClipboardList size={18} aria-hidden="true" />
             <span className="whitespace-nowrap">Solicitações</span>
-          </div>
-          <div className="flex min-w-0 flex-col items-center gap-1">
-            <NotebookPen size={18} />
+          </Link>
+          <Link
+            to="/professor/diario"
+            aria-current="page"
+            className="flex min-w-0 flex-col items-center gap-1 text-[color:var(--nav-active)]"
+          >
+            <NotebookPen size={18} aria-hidden="true" />
             <span className="whitespace-nowrap">Registros</span>
-          </div>
+          </Link>
         </nav>
       </div>
     </div>
