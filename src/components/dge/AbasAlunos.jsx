@@ -42,15 +42,13 @@ export function AbasAlunos({ ativa = "pesquisar", alunoId, voltarPara }) {
             <ArrowLeft aria-hidden="true" className="size-[18px]" />
           </Link>
         ) : (
-          <button
-            type="button"
-            disabled
-            aria-label="Voltar ao menu do professor"
-            title="Retorno ao menu do professor estará disponível em breve"
-            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center text-white"
+          <Link
+            to="/dge"
+            aria-label="Voltar ao menu da Gestão Escolar"
+            className="mr-3 inline-flex size-5 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/15"
           >
             <ArrowLeft aria-hidden="true" className="size-[18px]" />
-          </button>
+          </Link>
         )}
         <span>SEDUC · SERGIPE</span>
       </div>
