@@ -6,7 +6,7 @@ import ModalAdicionarAluno from "@/components/dge/ModalAdicionarAluno"
 import SelectFiltro from "@/components/dge/SelectFiltro"
 import DgeAppShell from "@/components/layout/DgeAppShell"
 import AvisoSucesso from "@/components/shared/AvisoSucesso"
-import EstadoErro from "@/components/shared/EstadoErro"
+import EstadoErro from "@/components/dge/EstadoErroDge"
 import ModalConfirmacao from "@/components/shared/ModalConfirmacao"
 import { Button } from "@/components/ui/button"
 import {

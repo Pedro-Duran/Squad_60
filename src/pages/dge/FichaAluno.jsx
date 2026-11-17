@@ -7,7 +7,7 @@ import DadosAcademicos from "@/components/dge/DadosAcademicos"
 import { AbasAlunos } from "@/components/dge/AbasAlunos"
 import DgeAppShell from "@/components/layout/DgeAppShell"
 import AvisoSucesso from "@/components/shared/AvisoSucesso"
-import EstadoErro from "@/components/shared/EstadoErro"
+import EstadoErro from "@/components/dge/EstadoErroDge"
 import { buscarAlunoPorId } from "@/services/alunoService"
 
 export default function FichaAluno() {

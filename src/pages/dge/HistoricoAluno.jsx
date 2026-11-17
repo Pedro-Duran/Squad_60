@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { AbasAlunos } from "@/components/dge/AbasAlunos"
 import ListaHistorico from "@/components/dge/ListaHistorico"
 import DgeAppShell from "@/components/layout/DgeAppShell"
-import EstadoErro from "@/components/shared/EstadoErro"
+import EstadoErro from "@/components/dge/EstadoErroDge"
 import { buscarAlunoPorId } from "@/services/alunoService"
 import { buscarHistoricoAluno } from "@/services/historicoService"
 

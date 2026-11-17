@@ -14,7 +14,7 @@ import {
 import { AbasAlunos } from "@/components/dge/AbasAlunos"
 import DgeAppShell from "@/components/layout/DgeAppShell"
 import CampoFormulario from "@/components/shared/CampoFormulario"
-import EstadoErro from "@/components/shared/EstadoErro"
+import EstadoErro from "@/components/dge/EstadoErroDge"
 import { formatarCpf } from "@/lib/texto"
 import { atualizarAluno, buscarAlunoPorId } from "@/services/alunoService"
 

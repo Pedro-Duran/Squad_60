@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router"
 import { BookOpen, Calendar, Check, FileText, LayoutGrid, List, Users } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
-import AppShell from "@/components/shared/AppShell"
+import AppShell from "@/components/dge/AppShellDge"
 import CardUsuario from "@/components/shared/CardUsuario"
-import EstadoErro from "@/components/shared/EstadoErro"
-import ItemMenu from "@/components/shared/ItemMenu"
+import EstadoErro from "@/components/dge/EstadoErroDge"
+import ItemMenu from "@/components/dge/ItemMenuDge"
 import { useDados } from "@/hooks/useDados"
 import { buscarGestor, definirGestorAtivo } from "@/services/gestorService"
 
