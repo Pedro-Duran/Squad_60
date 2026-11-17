@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ges-001",
+    "nome": "Beatriz Vieira Machado",
+    "nomeCurto": "Beatriz",
+    "genero": "F",
+    "departamento": "Departamento de Gestão Escolar"
+  },
+  {
+    "id": "ges-002",
+    "nome": "Ricardo Almeida Santos",
+    "nomeCurto": "Ricardo",
+    "genero": "M",
+    "departamento": "Departamento de Gestão Escolar"
+  }
+]
