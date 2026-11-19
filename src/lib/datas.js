@@ -41,6 +41,13 @@ export function somarDias(data, dias) {
   return paraTexto(d)
 }
 
+// segunda-feira da semana da data
+export function inicioDaSemana(data) {
+  const diaDaSemana = paraDate(data).getDay() // 0 = domingo, 1 = segunda...
+  const recuo = diaDaSemana === 0 ? 6 : diaDaSemana - 1
+  return somarDias(data, -recuo)
+}
+
 // "2026-09-14" → "Segunda-feira"
 export function nomeDiaSemana(data) {
   const nome = paraDate(data).toLocaleDateString('pt-BR', { weekday: 'long' })
