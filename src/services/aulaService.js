@@ -1,6 +1,7 @@
 import aulas from '@/mocks/aulas.json'
 import chamadaAlunos from '@/mocks/chamadaAlunos.json'
 import { simularRequisicao } from '@/services/mockUtils'
+import { somarDias } from '@/lib/datas'
 
 export function buscarAula(aulaId) {
   return simularRequisicao(() => {
@@ -62,5 +63,18 @@ export function listarAulasDoDia(professorId, data) {
     aulas
       .filter((aula) => aula.professorId === professorId && aula.data === data)
       .sort((a, b) => a.horario.localeCompare(b.horario)),
+  )
+}
+
+// Aulas de segunda a sábado da semana que começa em "segunda" (AAAA-MM-DD).
+export function listarAulasDaSemana(professorId, segunda) {
+  const sabado = somarDias(segunda, 5)
+  return simularRequisicao(() =>
+    aulas.filter(
+      (aula) =>
+        aula.professorId === professorId &&
+        aula.data >= segunda &&
+        aula.data <= sabado,
+    ),
   )
 }

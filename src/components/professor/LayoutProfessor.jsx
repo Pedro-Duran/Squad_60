@@ -9,6 +9,7 @@ import "@/pages/professor/professor.css"
 // Título do header por rota.
 const TITULOS = {
   "/professor/aulas-hoje": "Aulas de hoje",
+  "/professor/aulas-semana": "Aulas da semana",
   "/professor/solicitacoes": "Solicitações",
   "/professor/registros": "Registros",
   "/professor/presenca": "Lista de Presença",

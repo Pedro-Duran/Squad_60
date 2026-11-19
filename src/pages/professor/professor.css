@@ -1250,3 +1250,154 @@ label.nome-aluno {
     padding-right: var(--e-2);
   }
 }
+
+/* ================================================================== */
+/* Aulas da Semana (#150)                                             */
+/* ================================================================== */
+.aulas-semana {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+}
+
+.aulas-semana__titulo {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+/* Em telas de 360px a grade (~358px) não cabe: rola só ela, não a página. */
+.grade-semana__rolagem {
+  overflow-x: auto;
+  background: var(--superficie);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
+  padding: var(--e-3) var(--e-2);
+}
+
+.grade-semana {
+  border-collapse: separate;
+  border-spacing: 4px;
+  margin: 0 auto;
+}
+
+.grade-semana th,
+.grade-semana td {
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.grade-semana__canto {
+  width: 36px;
+}
+
+.grade-semana__dia {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 24px;
+  border-radius: var(--raio-pill);
+  background: var(--ink);
+  color: var(--sobre-ink);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.grade-semana__hora {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--texto-suave);
+  padding-right: var(--e-1);
+}
+
+.grade-semana__intervalo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  border-radius: var(--raio-badge);
+  background: var(--ink);
+  color: var(--branco);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.celula-aula {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 48px;
+  border-radius: var(--raio-badge);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.celula-aula--turma-1 {
+  background: var(--turma-1);
+  color: var(--branco);
+}
+
+.celula-aula--turma-2 {
+  background: var(--turma-2);
+  color: var(--branco);
+}
+
+.celula-aula--turma-3 {
+  background: var(--turma-3);
+  color: var(--texto);
+}
+
+.celula-aula--vazia {
+  border: 1px solid var(--borda);
+}
+
+.grade-semana__dia:focus-visible,
+a.celula-aula:focus-visible {
+  outline: 2px solid var(--primaria);
+  outline-offset: 2px;
+}
+
+.legenda-turmas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--e-2) var(--e-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--texto);
+}
+
+.legenda-turmas__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.legenda-turmas__cor {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.legenda-turmas__cor--turma-1 {
+  background: var(--turma-1);
+}
+
+.legenda-turmas__cor--turma-2 {
+  background: var(--turma-2);
+}
+
+.legenda-turmas__cor--turma-3 {
+  background: var(--turma-3);
+}
