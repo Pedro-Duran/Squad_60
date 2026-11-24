@@ -1,26 +1,22 @@
 import { useState } from "react"
 import { AuthContext } from "@/contexts/AuthContext"
 
-const CHAVE = "squad60:sessao"
-
-function lerSessaoSalva() {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE))
-  } catch {
-    return null
-  }
+// A sessão vive só na memória: ao iniciar a aplicação, sempre começa no login.
+// Remove a sessão que versões anteriores gravavam no navegador.
+try {
+  localStorage.removeItem("squad60:sessao")
+} catch {
+  // armazenamento indisponível: nada a limpar
 }
 
 export function AuthProvider({ children }) {
-  const [usuario, setUsuario] = useState(lerSessaoSalva)
+  const [usuario, setUsuario] = useState(null)
 
   function entrar(sessao) {
-    localStorage.setItem(CHAVE, JSON.stringify(sessao))
     setUsuario(sessao)
   }
 
   function sair() {
-    localStorage.removeItem(CHAVE)
     setUsuario(null)
   }
 

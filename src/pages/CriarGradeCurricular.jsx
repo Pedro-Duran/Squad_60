@@ -34,7 +34,7 @@ function Campo({ titulo, valor, alterar, opcoes, Icone = ChevronDown, desabilita
 export default function CriarGradeCurricular() {
   const navigate = useNavigate()
   const { state } = useLocation()
-  const inicio = state?.origem ?? "/coordenador"
+  const inicio = state?.origem ?? "/dge"
   const [modalidade, setModalidade] = useState("")
   const [ano, setAno] = useState("")
   const [turma, setTurma] = useState("")
@@ -157,7 +157,7 @@ export default function CriarGradeCurricular() {
         <nav aria-label="Navegação principal">
           <Link to={inicio}><Home size={20} />Início</Link>
           <span aria-current="page"><ClipboardList size={20} />Solicitações</span>
-          <Link to="/registros" state={{ origem: inicio }}><FolderOpen size={20} />Registros</Link>
+          <Link to="/dge/registros" state={{ origem: inicio }}><FolderOpen size={20} />Registros</Link>
         </nav>
       </footer>
     </div>

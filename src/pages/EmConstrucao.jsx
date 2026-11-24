@@ -1,22 +1,22 @@
-import { Link, useLocation } from "react-router"
+import { Link } from "react-router"
 import { useAuth } from "@/hooks/useAuth"
+import { ROTA_INICIAL } from "@/lib/rotas"
 
-export default function EmConstrucao() {
+export default function EmConstrucao({ titulo }) {
   const { usuario, sair } = useAuth()
-  const { pathname } = useLocation()
+  const rotaInicio = ROTA_INICIAL[usuario?.perfil] ?? "/login"
 
   return (
-    <main className="p-6">
+    <main className="flex flex-col items-start gap-3 p-6">
       <p>
-        Tela inicial de {usuario?.nome} ({usuario?.perfil}) em construção.
+        {titulo
+          ? `Tela de ${titulo} em construção.`
+          : `Tela inicial de ${usuario?.nome} (${usuario?.perfil}) em construção.`}
       </p>
-      {pathname === "/coordenador" && (
-        <Link className="block my-3 underline" to="/solicitacoes/criar-grade-curricular" state={{ origem: pathname }}>
-          Criar Grade Curricular
+      {titulo && (
+        <Link className="underline" to={rotaInicio}>
+          Voltar ao início
         </Link>
-      )}
-      {pathname === "/registros" && (
-        <Link className="block my-3 underline" to="/coordenador">Início</Link>
       )}
       <button type="button" onClick={sair}>
         Sair
