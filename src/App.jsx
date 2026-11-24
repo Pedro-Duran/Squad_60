@@ -4,6 +4,7 @@ import RotaProtegida from "@/components/shared/RotaProtegida"
 import LayoutProfessor from "@/components/professor/LayoutProfessor"
 import { Toaster } from "@/components/ui/sonner"
 import ConteudoProgramatico from "@/pages/ConteudoProgramatico"
+import CriarGradeCurricular from "@/pages/CriarGradeCurricular"
 import { AulasIntegrais } from "@/pages/AulasIntegrais"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
 import AnalisarEmenta from "@/pages/coordenador/AnalisarEmenta"
@@ -87,7 +88,7 @@ export default function App() {
             <Route path="/dge/alunos/:id/editar" element={<EditarCadastro />} />
             <Route path="/dge/alunos/:id/historico" element={<HistoricoAluno />} />
             <Route path="/dge/alunos/:id" element={<FichaAluno />} />
-            <Route path="/dge/grade" element={<DestinoPendente titulo="Grade Curricular" />} />
+            <Route path="/dge/grade" element={<CriarGradeCurricular />} />
             <Route path="/dge/modalidades" element={<MenuModalidadeDisciplinas />} />
             <Route path="/dge/modalidades/aulas-integrais" element={<AulasIntegrais />} />
             <Route path="/dge/modalidades/disciplinas" element={<GerenciarDisciplinas />} />
