@@ -1,12 +1,17 @@
 import { useCallback, useState } from "react"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, CheckCircle2 } from "lucide-react"
 import { Link, useNavigate } from "react-router"
 import { useAuth } from "@/hooks/useAuth"
 import { useDados } from "@/hooks/useDados"
+import { formatarDataCurta } from "@/lib/datas"
 import RodapeProfessor from "@/components/professor/RodapeProfessor"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import SeletorDataBrasileira from "@/components/professor/SeletorDataBrasileira"
 import { buscarProfessor } from "@/services/professorService"
 import { criarSolicitacaoReposicao } from "@/services/reposicaoService"
+
+const TURMAS = ["6º Ano", "7º Ano", "8º Ano", "9º Ano"]
 
 export default function SolicitarReposicao() {
   const { usuario } = useAuth()
@@ -19,6 +24,7 @@ export default function SolicitarReposicao() {
   })
   const [erroEnvio, setErroEnvio] = useState("")
   const [enviando, setEnviando] = useState(false)
+  const [solicitacaoEnviada, setSolicitacaoEnviada] = useState(null)
   const buscarProfessorLogado = useCallback(
     () => buscarProfessor(usuario.professorId),
     [usuario.professorId],
@@ -29,21 +35,15 @@ export default function SolicitarReposicao() {
     erro,
     recarregar,
   } = useDados(buscarProfessorLogado)
-  const atendeFundamental =
-    professor?.nivelEnsino.includes("Fundamental") ?? false
-  const atendeMedio = professor?.nivelEnsino.includes("Médio") ?? false
-  const exemplosTurma = [
-    atendeFundamental && "6º Ano A",
-    atendeMedio && "1º Ano EM A",
-  ].filter(Boolean)
-  const etapasAtendidas = [
-    atendeFundamental && "6º ao 9º ano do Ensino Fundamental",
-    atendeMedio && "1º ao 3º ano do Ensino Médio",
-  ].filter(Boolean)
 
   function atualizarCampo(evento) {
     const { name, value } = evento.target
     setFormulario((atual) => ({ ...atual, [name]: value }))
+  }
+
+  // Ao fechar o aviso (OK, Esc ou clique fora) segue para o painel de reposições.
+  function concluirEnvio() {
+    navigate("/professor/reposicoes", { replace: true })
   }
 
   async function enviarSolicitacao(evento) {
@@ -55,11 +55,11 @@ export default function SolicitarReposicao() {
     }
     setEnviando(true)
     try {
-      await criarSolicitacaoReposicao({
+      const solicitacao = await criarSolicitacaoReposicao({
         professorId: usuario.professorId,
         ...formulario,
       })
-      navigate("/professor/reposicoes", { replace: true })
+      setSolicitacaoEnviada(solicitacao)
     } catch (erroSolicitacao) {
       setErroEnvio(
         erroSolicitacao instanceof Error
@@ -125,17 +125,20 @@ export default function SolicitarReposicao() {
 
             <label className="grid gap-1.5 text-sm font-semibold">
               Turma
-              <input
+              <select
                 name="turma"
                 required
                 value={formulario.turma}
                 onChange={atualizarCampo}
-                placeholder={`Ex.: ${exemplosTurma.join(" ou ")}`}
-                className="min-h-11 rounded-xl border border-slate-300 px-3 font-normal outline-none focus:border-blue-700"
-              />
-              <span className="font-normal text-slate-500">
-                Turmas do {etapasAtendidas.join(" e ")}.
-              </span>
+                className="min-h-11 rounded-xl border border-slate-300 bg-white px-3 font-normal outline-none focus:border-blue-700"
+              >
+                <option value="">Selecione a turma</option>
+                {TURMAS.map((turma) => (
+                  <option key={turma} value={turma}>
+                    {turma}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label className="grid gap-1.5 text-sm font-semibold">
@@ -192,6 +195,43 @@ export default function SolicitarReposicao() {
         ) : null}
       </section>
       <RodapeProfessor />
+
+      <Dialog
+        open={Boolean(solicitacaoEnviada)}
+        onOpenChange={(aberto) => {
+          if (!aberto) concluirEnvio()
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
+          overlayClassName="bg-black/50"
+          className="gap-0 rounded-2xl px-6 pb-5 pt-6 text-center sm:max-w-[350px]"
+        >
+          <CheckCircle2
+            aria-hidden="true"
+            className="mx-auto size-10 fill-emerald-600 text-white"
+          />
+          <DialogTitle className="mt-3 text-center text-base font-bold">
+            Solicitação enviada
+          </DialogTitle>
+          <DialogDescription className="mt-2 text-center text-sm leading-6">
+            Sua solicitação de aula de reposição foi enviada e está pendente de análise.
+          </DialogDescription>
+          {solicitacaoEnviada && (
+            <p className="mt-1 text-center text-xs font-semibold text-muted-foreground">
+              {solicitacaoEnviada.turma} · {solicitacaoEnviada.turno} ·{" "}
+              {formatarDataCurta(solicitacaoEnviada.dataAula)}
+            </p>
+          )}
+          <Button
+            type="button"
+            className="mt-5 h-10 w-full rounded-full bg-[#1026a6] text-sm font-semibold text-white hover:bg-[#1026a6]/90"
+            onClick={concluirEnvio}
+          >
+            OK
+          </Button>
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }
