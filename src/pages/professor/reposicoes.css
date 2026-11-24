@@ -38,3 +38,7 @@
 .pagina-reposicoes,.pagina-erro,.skeleton-pagina,.menu-professor{font-family:var(--font-sans),sans-serif;color:var(--texto);background:var(--fundo)}
 .pagina-reposicoes a,.pagina-erro a,.menu-professor a{text-decoration:none}
 .pagina-reposicoes button,.pagina-erro button{font:inherit}
+
+.pagina-reposicoes{min-height:0;display:flex;flex-direction:column}
+.reposicoes-corpo{flex:1}
+.pagina-erro{min-height:0;flex:1}

@@ -8,6 +8,7 @@ import { buscarPainelReposicoes } from '@/services/reposicaoService'
 import { formatarDataExtensa } from '@/lib/datas'
 import CardResumo from '@/components/professor/CardResumo'
 import CardReposicao from '@/components/professor/CardReposicao'
+import RodapeProfessor from '@/components/professor/RodapeProfessor'
 import EstadoErro from '@/components/shared/EstadoErro'
 const HOJE = new Date().toLocaleDateString('en-CA')
 const RESUMOS = [
@@ -19,6 +20,16 @@ const RESUMOS = [
 function Skeleton() {
   return <div className="skeleton-pagina" aria-label="Carregando painel de reposições" role="status"><div className="skeleton skeleton-topo" /><div className="skeleton skeleton-titulo" />{[0, 1, 2].map((i) => <div key={i} className="skeleton skeleton-card" />)}</div>
 }
+
+function PaginaComRodape({ children }) {
+  return (
+    <div className="flex min-h-screen flex-col bg-[#dedede]">
+      {children}
+      <RodapeProfessor />
+    </div>
+  )
+}
+
 export default function Reposicoes() {
   const { usuario } = useAuth()
   const navigate = useNavigate()
@@ -29,7 +40,7 @@ export default function Reposicoes() {
     [usuario.professorId],
   )
   const { dados, carregando, erro, recarregar } = useDados(buscarPainel)
-  if (estado === 'carregando' || (carregando && estado !== 'erro')) return <Skeleton />
+  if (estado === 'carregando' || (carregando && estado !== 'erro')) return <PaginaComRodape><div className="flex-1"><Skeleton /></div></PaginaComRodape>
   const tentarNovamente = () => {
     if (estado === 'erro') {
       parametros.delete('estado')
@@ -37,10 +48,10 @@ export default function Reposicoes() {
     }
     recarregar()
   }
-  if (estado === 'erro' || erro) return <EstadoErro nome="o painel de reposições" recarregar={tentarNovamente} />
-  if (!dados) return null
+  if (estado === 'erro' || erro) return <PaginaComRodape><div className="flex flex-1 flex-col"><EstadoErro nome="o painel de reposições" recarregar={tentarNovamente} /></div></PaginaComRodape>
+  if (!dados) return <PaginaComRodape />
   const { professor, resumo, proximas } = dados
-  return <main className="pagina-reposicoes">
+  return <PaginaComRodape><main className="pagina-reposicoes flex-1">
     <header className="reposicoes-topo"><div className="reposicoes-conteudo">
       <div className="saudacao-linha">
         <div className="flex items-start gap-3">
@@ -68,7 +79,6 @@ export default function Reposicoes() {
     <section className="reposicoes-corpo"><div className="secao-cabecalho"><h2>Próximas reposições</h2><Link to="/professor/reposicoes/todas">Ver todas <ChevronRight size={17} aria-hidden="true" /></Link></div>
       <div className="lista-reposicoes">{proximas.length ? proximas.map((item) => <CardReposicao key={item.id} reposicao={item} />) : <p className="sem-reposicoes">Nenhuma reposição marcada.</p>}</div>
       <Link className="botao-gerenciar" to="/professor/solicitacoes/nova"><Plus size={18} aria-hidden="true" /> Solicitar nova reposição</Link>
-      <Link className="botao-gerenciar" to="/professor/reposicoes/gerenciar">Gerenciar reposições</Link>
     </section>
-  </main>
+  </main></PaginaComRodape>
 }

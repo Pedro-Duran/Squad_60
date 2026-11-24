@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react"
 import { Link, useNavigate } from "react-router"
 import { useAuth } from "@/hooks/useAuth"
 import { useDados } from "@/hooks/useDados"
+import RodapeProfessor from "@/components/professor/RodapeProfessor"
+import SeletorDataBrasileira from "@/components/professor/SeletorDataBrasileira"
 import { buscarProfessor } from "@/services/professorService"
 import { criarSolicitacaoReposicao } from "@/services/reposicaoService"
 
@@ -47,6 +49,10 @@ export default function SolicitarReposicao() {
   async function enviarSolicitacao(evento) {
     evento.preventDefault()
     setErroEnvio("")
+    if (!formulario.dataAula) {
+      setErroEnvio("Informe uma data válida no formato DD/MM/AAAA.")
+      return
+    }
     setEnviando(true)
     try {
       await criarSolicitacaoReposicao({
@@ -66,13 +72,13 @@ export default function SolicitarReposicao() {
   }
 
   return (
-    <main className="min-h-screen bg-[#dedede] text-[#192a44]">
+    <main className="flex min-h-screen flex-col bg-[#dedede] text-[#192a44]">
       <header className="bg-gradient-to-r from-[#001638] to-[#102aa5] px-5 pb-6 pt-5 text-white">
         <div className="mx-auto w-full max-w-[430px]">
           <Link
             to="/professor/reposicoes"
             className="inline-flex size-9 items-center justify-center rounded-full bg-white/10"
-            aria-label="Voltar às reposições"
+            aria-label="Voltar ao painel de reposições"
           >
             <ArrowLeft size={20} aria-hidden="true" />
           </Link>
@@ -86,7 +92,7 @@ export default function SolicitarReposicao() {
         </div>
       </header>
 
-      <section className="mx-auto w-full max-w-[430px] px-4 py-5">
+      <section className="mx-auto w-full max-w-[430px] flex-1 px-4 py-5">
         {carregando ? (
           <p role="status">Carregando dados do professor...</p>
         ) : erro ? (
@@ -142,23 +148,19 @@ export default function SolicitarReposicao() {
                 className="min-h-11 rounded-xl border border-slate-300 bg-white px-3 font-normal outline-none focus:border-blue-700"
               >
                 <option value="">Selecione o turno</option>
-                <option value="Manhã">Manhã</option>
                 <option value="Tarde">Tarde</option>
-                <option value="Noite">Noite</option>
               </select>
             </label>
 
-            <label className="grid gap-1.5 text-sm font-semibold">
-              Data da aula a repor
-              <input
-                name="dataAula"
-                type="date"
-                required
+            <div className="grid gap-1.5 text-sm font-semibold">
+              <span>Sugestão de data da aula de reposição</span>
+              <SeletorDataBrasileira
                 value={formulario.dataAula}
-                onChange={atualizarCampo}
-                className="min-h-11 rounded-xl border border-slate-300 px-3 font-normal outline-none focus:border-blue-700"
+                onChange={(dataAula) =>
+                  setFormulario((atual) => ({ ...atual, dataAula }))
+                }
               />
-            </label>
+            </div>
 
             <label className="grid gap-1.5 text-sm font-semibold">
               Motivo da solicitação
@@ -189,6 +191,7 @@ export default function SolicitarReposicao() {
           </form>
         ) : null}
       </section>
+      <RodapeProfessor />
     </main>
   )
 }

@@ -9,6 +9,7 @@ import {
 } from "@/services/reposicaoService"
 
 function formatarData(data) {
+  if (!data) return "Não informada"
   const [ano, mes, dia] = data.split("-").map(Number)
   return new Date(ano, mes - 1, dia, 12).toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -103,13 +104,17 @@ export default function HorariosReposicao() {
               <strong>{dados.solicitacao.turma}</strong>
             </div>
             <div className="cr-resumo-linha">
+              <span>Sugestão de data da aula de reposição</span>
+              <strong>{formatarData(dados.solicitacao.dataAula)}</strong>
+            </div>
+            <div className="cr-resumo-linha">
               <span>Solicitada em</span>
               <strong>{formatarData(dados.solicitacao.dataSolicitacao)}</strong>
             </div>
           </section>
 
           <label className="cr-campo">
-            <span>Data da reposição (somente sábados, até dois meses)</span>
+            <span>Data da reposição (segunda a sábado, até dois meses)</span>
             {dados.datas.length ? (
               <select
                 className="cr-select-data"

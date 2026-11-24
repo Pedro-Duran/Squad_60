@@ -1,4 +1,3 @@
-import disponibilidade from "@/mocks/disponibilidade.json"
 import professores from "@/mocks/professores.json"
 import reposicoesIniciais from "@/mocks/reposicoes.json"
 import { simularRequisicao } from "@/services/mockUtils"
@@ -7,12 +6,11 @@ const CHAVE_REPOSICOES = "squad60:reposicoes"
 export const EVENTO_REPOSICOES_ATUALIZADAS = "squad60:reposicoes-atualizadas"
 const SALAS = Array.from({ length: 8 }, (_, indice) => indice + 1)
 const HORARIOS = [
-  { inicio: "07:00", fim: "07:50" },
-  { inicio: "07:50", fim: "08:40" },
-  { inicio: "08:40", fim: "09:30" },
-  { inicio: "10:00", fim: "10:50" },
-  { inicio: "10:50", fim: "11:40" },
-  { inicio: "11:40", fim: "12:30" },
+  { inicio: "14:00", fim: "14:50" },
+  { inicio: "14:50", fim: "15:40" },
+  { inicio: "15:40", fim: "16:30" },
+  { inicio: "17:00", fim: "17:50" },
+  { inicio: "17:50", fim: "18:40" },
 ]
 
 function dataLocalISO(data = new Date()) {
@@ -120,14 +118,12 @@ function gerarDatasDisponiveis(solicitacao) {
   )
   const limite = adicionarMeses(solicitacao.dataSolicitacao, 2)
 
-  while (inicio.getDay() !== 6) {
-    inicio.setDate(inicio.getDate() + 1)
-  }
-
   const datas = []
   while (inicio <= limite) {
-    datas.push(dataLocalISO(inicio))
-    inicio.setDate(inicio.getDate() + 7)
+    if (inicio.getDay() !== 0) {
+      datas.push(dataLocalISO(inicio))
+    }
+    inicio.setDate(inicio.getDate() + 1)
   }
   return datas
 }
@@ -158,6 +154,26 @@ function opcoesParaSolicitacao(solicitacoes, solicitacao) {
     .filter((dia) => dia.horarios.length > 0)
 }
 
+function contarHorariosDisponiveis(solicitacoes, hoje = dataLocalISO()) {
+  const inicio = dataDeISO(hoje)
+  const limite = adicionarMeses(hoje, 2)
+  let total = 0
+
+  while (inicio <= limite) {
+    if (inicio.getDay() !== 0) {
+      const data = dataLocalISO(inicio)
+      for (const horario of HORARIOS) {
+        total += SALAS.filter((sala) =>
+          horarioDisponivel(solicitacoes, null, data, horario, sala),
+        ).length
+      }
+    }
+    inicio.setDate(inicio.getDate() + 1)
+  }
+
+  return total
+}
+
 export function listarSolicitacoesCalendario(status) {
   return simularRequisicao(() => {
     const solicitacoes = ordenarPorSolicitacao(lerSolicitacoes())
@@ -183,15 +199,14 @@ export function buscarPainelCalendarioReposicao() {
 
     return {
       metricas: {
-        aulasPendentes: disponibilidade.reduce(
-          (total, item) => total + item.aulasPendentes,
-          0,
-        ),
-        reposicoesAgendadas: proximas.length,
-        horariosDisponiveis: disponibilidade.reduce(
-          (total, item) => total + item.horariosDisponiveis,
-          0,
-        ),
+        aulasPendentes: solicitacoes.filter(
+          (item) =>
+            item.status === "aprovada" && item.data && item.data >= hoje,
+        ).length,
+        reposicoesAgendadas: solicitacoes.filter(
+          (item) => item.status === "aprovada",
+        ).length,
+        horariosDisponiveis: contarHorariosDisponiveis(solicitacoes, hoje),
         solicitacoesPendentes: pendentes.length,
       },
       proximas: proximas.slice(0, 3),
@@ -232,6 +247,9 @@ export function criarSolicitacaoReposicao({
     const turmaInformada = turma?.trim() ?? ""
     if (!turmaInformada || !turno || !dataAula || !motivo?.trim()) {
       throw new Error("Preencha todos os dados da solicitação.")
+    }
+    if (turno !== "Tarde") {
+      throw new Error("O único turno disponível para reposição é o da tarde.")
     }
     if (!turmaValidaParaNivel(turmaInformada, professor.nivelEnsino)) {
       const etapasAtendidas = []
@@ -285,7 +303,7 @@ export function aprovarSolicitacaoReposicao(id, agendamento) {
     if (
       !horario ||
       !SALAS.includes(sala) ||
-      dataEscolhida.getDay() !== 6 ||
+      dataEscolhida.getDay() === 0 ||
       !dentroDoPrazo ||
       !opcoesParaSolicitacao(solicitacoes, solicitacao).some(
         (dia) =>
@@ -338,16 +356,15 @@ export function calcularPainelReposicoes(professorId, hoje, lista) {
 
   const todas = lista ?? lerSolicitacoes()
   const doProfessor = todas.filter((item) => item.professorId === professorId)
-  const resumoDisponibilidade = disponibilidade.find(
-    (item) => item.professorId === professorId,
-  )
   const resumo = {
-    aulasPendentes: resumoDisponibilidade?.aulasPendentes ?? 0,
-    reposicoesAgendadas: doProfessor.filter(
+    aulasPendentes: doProfessor.filter(
       (item) =>
         item.status === "aprovada" && item.data && item.data >= hoje,
     ).length,
-    horariosDisponiveis: resumoDisponibilidade?.horariosDisponiveis ?? 0,
+    reposicoesAgendadas: doProfessor.filter(
+      (item) => item.status === "aprovada",
+    ).length,
+    horariosDisponiveis: contarHorariosDisponiveis(todas, hoje),
     solicitacoesPendentes: doProfessor.filter(
       (item) => item.status === "pendente",
     ).length,

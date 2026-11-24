@@ -17,8 +17,8 @@ function dataAtualExtensa() {
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
 
-function CartaoMetrica({ valor, rotulo, destaque, destino }) {
-  const classe = `cr-metrica${destaque ? " cr-metrica-destaque" : ""}`
+function CartaoMetrica({ valor, rotulo, destino }) {
+  const classe = "cr-metrica"
   const conteudo = (
     <>
       <strong>{valor}</strong>
@@ -86,7 +86,6 @@ export default function CalendarioReposicao() {
             <CartaoMetrica
               valor={dados.metricas.solicitacoesPendentes}
               rotulo="Solicitações pendentes"
-              destaque
               destino="/dge/reposicao/solicitacoes/pendente"
             />
           </section>
