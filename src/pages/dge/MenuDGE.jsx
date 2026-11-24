@@ -37,7 +37,7 @@ const ATALHOS = [
     titulo: "Controle de Ementas",
     descricao: "Acompanhamento de diretrizes e planos de ensino",
     icone: FileText,
-    rota: "/dge/ementas",
+    rota: "/coordenador",
   },
   {
     titulo: "Calendário de Reposição",

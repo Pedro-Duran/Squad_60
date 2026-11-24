@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ement-001",
+    "titulo": "História da Constituição",
+    "disciplina": "História",
+    "serie": "9º Ano",
+    "periodo": "1º Bimestre 2026",
+    "coordenador": "Carlos Silva",
+    "dataEnvio": "2026-01-26",
+    "status": "pendente",
+    "conteudos": ["Proclamação da República", "Constituição de 1988", "Direitos Fundamentais"],
+    "observacoes": "Ênfase nos marcos históricos e na participação popular."
+  },
+  {
+    "id": "ement-002",
+    "titulo": "Geografia de Sergipe",
+    "disciplina": "Geografia",
+    "serie": "7º Ano",
+    "periodo": "1º Bimestre 2026",
+    "coordenador": "Maria Santos",
+    "dataEnvio": "2026-01-25",
+    "status": "deferida",
+    "conteudos": ["Relevo e hidrografia sergipana", "Regiões geográficas de Sergipe", "Economia e população do estado"],
+    "observacoes": "Utilizar mapas do estado nas atividades de campo."
+  },
+  {
+    "id": "ement-003",
+    "titulo": "Álgebra Linear Básica",
+    "disciplina": "Matemática",
+    "serie": "1º Ano EM",
+    "periodo": "1º Bimestre 2026",
+    "coordenador": "Roberto Lima",
+    "dataEnvio": "2026-01-24",
+    "status": "indeferida",
+    "justificativa": "Carga horária incompatível com o currículo do 1º Ano do Ensino Médio.",
+    "conteudos": ["Vetores no plano", "Matrizes e operações", "Sistemas lineares"],
+    "observacoes": "Conteúdo proposto como aprofundamento."
+  },
+  {
+    "id": "ement-004",
+    "titulo": "Biologia Celular",
+    "disciplina": "Biologia",
+    "serie": "2º Ano EM",
+    "periodo": "2º Bimestre 2026",
+    "coordenador": "Ana Oliveira",
+    "dataEnvio": "2026-01-23",
+    "status": "deferida",
+    "conteudos": ["Estrutura da célula", "Organelas e funções", "Divisão celular"],
+    "observacoes": "Prever aulas práticas com microscópio."
+  },
+  {
+    "id": "ement-005",
+    "titulo": "Literatura Sergipana",
+    "disciplina": "Português",
+    "serie": "8º Ano",
+    "periodo": "1º Bimestre 2026",
+    "coordenador": "Carlos Silva",
+    "dataEnvio": "2026-01-22",
+    "status": "pendente",
+    "conteudos": ["Autores sergipanos", "Literatura de cordel", "Produção de textos regionais"],
+    "observacoes": "Incluir visita à Academia Sergipana de Letras."
+  }
+]

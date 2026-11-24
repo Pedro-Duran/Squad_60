@@ -6,6 +6,9 @@ import { Toaster } from "@/components/ui/sonner"
 import ConteudoProgramatico from "@/pages/ConteudoProgramatico"
 import { AulasIntegrais } from "@/pages/AulasIntegrais"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
+import AnalisarEmenta from "@/pages/coordenador/AnalisarEmenta"
+import EmentasValidacao from "@/pages/coordenador/EmentasValidacao"
+import HubCoordenador from "@/pages/coordenador/HubCoordenador"
 import FichaAluno from "@/pages/dge/FichaAluno"
 import { GerenciarDisciplinas } from "@/pages/GerenciarDisciplinas"
 import GerenciarAlunos from "@/pages/dge/GerenciarAlunos"
@@ -77,7 +80,6 @@ export default function App() {
               element={<Navigate to="/professor/reposicoes" replace />}
             />
           </Route>
-          <Route path="/coordenador" element={<Navigate to="/dge" replace />} />
           <Route element={<RotaProtegida perfil={["dge", "coordenador"]} />}>
             <Route path="/dge" element={<MenuDGE />} />
             <Route path="/dge/alunos" element={<PesquisarAluno />} />
@@ -89,7 +91,22 @@ export default function App() {
             <Route path="/dge/modalidades" element={<MenuModalidadeDisciplinas />} />
             <Route path="/dge/modalidades/aulas-integrais" element={<AulasIntegrais />} />
             <Route path="/dge/modalidades/disciplinas" element={<GerenciarDisciplinas />} />
-            <Route path="/dge/ementas" element={<DestinoPendente titulo="Controle de Ementas" />} />
+            <Route path="/dge/ementas" element={<Navigate to="/coordenador" replace />} />
+            <Route path="/coordenador" element={<HubCoordenador />} />
+            <Route
+              path="/coordenador/ementas"
+              element={<EmConstrucao titulo="Ementas Criadas" />}
+            />
+            <Route
+              path="/coordenador/ementas/nova"
+              element={<EmConstrucao titulo="Criar Ementa Pedagógica" />}
+            />
+            <Route path="/coordenador/ementas/validacao" element={<EmentasValidacao />} />
+            <Route path="/coordenador/ementas/validacao/:id" element={<AnalisarEmenta />} />
+            <Route
+              path="/coordenador/registros"
+              element={<EmConstrucao titulo="Registros" />}
+            />
             <Route
               path="/dge/reposicao"
               element={<DestinoPendente titulo="Calendário de Reposição" />}
