@@ -1,6 +1,8 @@
 import { useState } from "react"
-import { ArrowLeft, BookOpen, CalendarDays, ChevronDown, ClipboardList, FolderOpen, Home, MoreVertical } from "lucide-react"
+import { AlertTriangle, ArrowLeft, BookOpen, CalendarDays, CheckCircle2, ChevronDown, ClipboardList, FolderOpen, Home, MoreVertical } from "lucide-react"
 import { Link, useLocation, useNavigate } from "react-router"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import logo from "../assets/Seduc-Logo-Branco-Negativo 1.png"
 import "./CriarGradeCurricular.css"
 
@@ -10,10 +12,18 @@ const disciplinasIniciais = [
   { nome: "Programação", horas: 80 },
   { nome: "História", horas: 80 },
 ]
-const turmas = {
-  "Ensino Médio": ["1º ano · Manhã", "2º ano · Manhã", "3º ano · Tarde"],
-  "Ensino Fundamental": ["6º ano · Manhã", "7º ano · Tarde", "8º ano · Manhã", "9º ano · Tarde"],
+const turnos = ["Manhã", "Tarde"]
+const seriesPorModalidade = {
+  "Ensino Médio": [1, 2, 3],
+  "Ensino Fundamental": [6, 7, 8, 9],
 }
+// Todo ano oferece todos os turnos: "1º ano · Manhã", "1º ano · Tarde", ...
+const turmas = Object.fromEntries(
+  Object.entries(seriesPorModalidade).map(([modalidade, series]) => [
+    modalidade,
+    series.flatMap((serie) => turnos.map((turno) => `${serie}º ano · ${turno}`)),
+  ]),
+)
 const anos = [2025, 2026, 2027]
 
 function Campo({ titulo, valor, alterar, opcoes, Icone = ChevronDown, desabilitado }) {
@@ -41,19 +51,25 @@ export default function CriarGradeCurricular() {
   const [disciplinas, setDisciplinas] = useState(disciplinasIniciais)
   const [menu, setMenu] = useState(null)
   const [edicao, setEdicao] = useState(null)
-  const [aviso, setAviso] = useState("")
+  const [aviso, setAviso] = useState(null) // { tipo: "sucesso" | "erro", texto }
+  const [avisoAberto, setAvisoAberto] = useState(false)
   const total = disciplinas.reduce((soma, item) => soma + item.horas, 0)
   const podeSalvar = Boolean(modalidade && ano && turma)
   const voltar = () => state?.origem ? navigate(-1) : navigate(inicio, { replace: true })
+
+  function mostrarAviso(tipo, texto) {
+    setAviso({ tipo, texto })
+    setAvisoAberto(true)
+  }
 
   function salvar() {
     if (!podeSalvar) return
     try {
       const chave = JSON.stringify([modalidade, ano, turma])
       localStorage.setItem(`squad60:grade:${chave}`, JSON.stringify({ modalidade, ano, turma, disciplinas }))
-      setAviso("Grade salva com sucesso.")
+      mostrarAviso("sucesso", "Grade salva com sucesso.")
     } catch {
-      setAviso("Não foi possível salvar a grade.")
+      mostrarAviso("erro", "Não foi possível salvar a grade. Tente novamente.")
     }
   }
 
@@ -67,7 +83,6 @@ export default function CriarGradeCurricular() {
       ? [...lista, item]
       : lista.map((anterior, indice) => indice === edicao.indice ? item : anterior))
     setEdicao(null)
-    setAviso("")
   }
 
   return (
@@ -84,15 +99,12 @@ export default function CriarGradeCurricular() {
           <Campo titulo="Modalidade" valor={modalidade} opcoes={Object.keys(turmas)} alterar={(valor) => {
             setModalidade(valor)
             setTurma("")
-            setAviso("")
           }} />
           <Campo titulo="Ano Letivo" valor={ano} opcoes={anos} Icone={CalendarDays} alterar={(valor) => {
             setAno(valor)
-            setAviso("")
           }} />
           <Campo titulo="Turma" valor={turma} opcoes={turmas[modalidade] ?? []} desabilitado={!modalidade} alterar={(valor) => {
             setTurma(valor)
-            setAviso("")
           }} />
         </div>
         <section aria-labelledby="grade-disciplinas">
@@ -120,7 +132,6 @@ export default function CriarGradeCurricular() {
                       setEdicao(null)
                       setDisciplinas((lista) => lista.filter((_, posicao) => posicao !== indice))
                       setMenu(null)
-                      setAviso("")
                     }}>Remover</button>
                   </div>
                 )}
@@ -150,7 +161,6 @@ export default function CriarGradeCurricular() {
           <button type="button" onClick={voltar}>Cancelar</button>
           <button type="button" disabled={!podeSalvar} onClick={salvar}>Salvar grade</button>
         </div>
-        {aviso && <p role="status">{aviso}</p>}
       </main>
       <footer className="grade-footer">
         <small>©2026 Desenvolvido por SQUAD 60</small>
@@ -160,6 +170,38 @@ export default function CriarGradeCurricular() {
           <Link to="/dge/registros" state={{ origem: inicio }}><FolderOpen size={20} />Registros</Link>
         </nav>
       </footer>
+
+      <Dialog open={avisoAberto} onOpenChange={setAvisoAberto}>
+        <DialogContent
+          showCloseButton={false}
+          overlayClassName="bg-black/50"
+          className="gap-0 rounded-2xl px-6 pb-5 pt-6 text-center sm:max-w-[350px]"
+        >
+          {aviso?.tipo === "erro" ? (
+            <AlertTriangle aria-hidden="true" className="mx-auto size-10 fill-destructive text-white" />
+          ) : (
+            <CheckCircle2 aria-hidden="true" className="mx-auto size-10 fill-emerald-600 text-white" />
+          )}
+          <DialogTitle className="mt-3 text-center text-base font-bold">
+            {aviso?.tipo === "erro" ? "Não foi possível salvar" : "Grade salva"}
+          </DialogTitle>
+          <DialogDescription className="mt-2 text-center text-sm leading-6">
+            {aviso?.texto}
+          </DialogDescription>
+          {aviso?.tipo === "sucesso" && (
+            <p className="mt-1 text-center text-xs font-semibold text-muted-foreground">
+              {modalidade} · {ano} · {turma}
+            </p>
+          )}
+          <Button
+            type="button"
+            className="mt-5 h-10 w-full rounded-lg bg-[#1453af] text-sm font-semibold text-white hover:bg-[#1453af]/90"
+            onClick={() => setAvisoAberto(false)}
+          >
+            OK
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
