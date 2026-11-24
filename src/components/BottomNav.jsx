@@ -2,9 +2,9 @@ import { BookOpen, ClipboardList, Home } from "lucide-react"
 import { useNavigate } from "react-router"
 
 const itens = [
-  { id: "inicio", label: "Início", icon: Home, to: "/" },
-  { id: "solicitacoes", label: "Solicitações", icon: ClipboardList, to: "/" },
-  { id: "registros", label: "Registros", icon: BookOpen, to: "/" },
+  { id: "inicio", label: "Início", icon: Home, to: "/dge" },
+  { id: "solicitacoes", label: "Solicitações", icon: ClipboardList, to: "/dge/solicitacoes" },
+  { id: "registros", label: "Registros", icon: BookOpen, to: "/dge/registros" },
 ]
 
 export function BottomNav({ ativo = "inicio" }) {

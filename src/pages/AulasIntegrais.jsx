@@ -479,7 +479,7 @@ export function AulasIntegrais() {
   return (
     <div className="curriculum-page">
       <header className="curriculum-header curriculum-header--aulas">
-        <button type="button" className="curriculum-back-circle" aria-label="Voltar" onClick={() => navigate("/")}>
+        <button type="button" className="curriculum-back-circle" aria-label="Voltar" onClick={() => navigate("/dge/modalidades")}>
           <ArrowLeft size={18} />
         </button>
         <div className="curriculum-header-copy">

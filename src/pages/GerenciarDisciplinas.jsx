@@ -101,7 +101,7 @@ export function GerenciarDisciplinas() {
           type="button"
           className="curriculum-back-circle"
           aria-label="Voltar"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/dge/modalidades")}
         >
           <ArrowLeft size={18} />
         </button>

@@ -24,7 +24,7 @@ export function MenuModalidadeDisciplinas() {
           <button
             type="button"
             className="curriculum-option-card"
-            onClick={() => navigate("/aulas-integrais")}
+            onClick={() => navigate("/dge/modalidades/aulas-integrais")}
           >
             <span className="curriculum-option-icon">
               <Layers size={22} />
@@ -41,7 +41,7 @@ export function MenuModalidadeDisciplinas() {
           <button
             type="button"
             className="curriculum-option-card"
-            onClick={() => navigate("/disciplinas")}
+            onClick={() => navigate("/dge/modalidades/disciplinas")}
           >
             <span className="curriculum-option-icon">
               <BookOpen size={22} />
