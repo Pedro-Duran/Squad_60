@@ -4,11 +4,14 @@ import RotaProtegida from "@/components/shared/RotaProtegida"
 import LayoutProfessor from "@/components/professor/LayoutProfessor"
 import { Toaster } from "@/components/ui/sonner"
 import ConteudoProgramatico from "@/pages/ConteudoProgramatico"
+import { AulasIntegrais } from "@/pages/AulasIntegrais"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
 import FichaAluno from "@/pages/dge/FichaAluno"
+import { GerenciarDisciplinas } from "@/pages/GerenciarDisciplinas"
 import GerenciarAlunos from "@/pages/dge/GerenciarAlunos"
 import HistoricoAluno from "@/pages/dge/HistoricoAluno"
 import MenuDGE from "@/pages/dge/MenuDGE"
+import { MenuModalidadeDisciplinas } from "@/pages/MenuModalidadeDisciplinas"
 import PesquisarAluno from "@/pages/dge/PesquisarAluno"
 import DiarioEletronico from "@/pages/professor/DiarioEletronico"
 import EmConstrucao from "@/pages/EmConstrucao"
@@ -83,10 +86,9 @@ export default function App() {
             <Route path="/dge/alunos/:id/historico" element={<HistoricoAluno />} />
             <Route path="/dge/alunos/:id" element={<FichaAluno />} />
             <Route path="/dge/grade" element={<DestinoPendente titulo="Grade Curricular" />} />
-            <Route
-              path="/dge/modalidades"
-              element={<DestinoPendente titulo="Modalidade e Disciplinas" />}
-            />
+            <Route path="/dge/modalidades" element={<MenuModalidadeDisciplinas />} />
+            <Route path="/dge/modalidades/aulas-integrais" element={<AulasIntegrais />} />
+            <Route path="/dge/modalidades/disciplinas" element={<GerenciarDisciplinas />} />
             <Route path="/dge/ementas" element={<DestinoPendente titulo="Controle de Ementas" />} />
             <Route
               path="/dge/reposicao"
