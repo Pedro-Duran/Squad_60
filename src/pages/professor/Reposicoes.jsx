@@ -1,6 +1,6 @@
 import './reposicoes.css'
 import { useCallback } from 'react'
-import { ArrowLeft, Bell, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Bell, ChevronRight, Plus } from 'lucide-react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useAuth } from '@/hooks/useAuth'
 import { useDados } from '@/hooks/useDados'
@@ -9,7 +9,7 @@ import { formatarDataExtensa } from '@/lib/datas'
 import CardResumo from '@/components/professor/CardResumo'
 import CardReposicao from '@/components/professor/CardReposicao'
 import EstadoErro from '@/components/shared/EstadoErro'
-const HOJE = '2026-09-14'
+const HOJE = new Date().toLocaleDateString('en-CA')
 const RESUMOS = [
   { chave: 'aulasPendentes', rotulo: 'Aulas pendentes' },
   { chave: 'reposicoesAgendadas', rotulo: 'Reposições agendadas' },
@@ -67,6 +67,7 @@ export default function Reposicoes() {
     </div></header>
     <section className="reposicoes-corpo"><div className="secao-cabecalho"><h2>Próximas reposições</h2><Link to="/professor/reposicoes/todas">Ver todas <ChevronRight size={17} aria-hidden="true" /></Link></div>
       <div className="lista-reposicoes">{proximas.length ? proximas.map((item) => <CardReposicao key={item.id} reposicao={item} />) : <p className="sem-reposicoes">Nenhuma reposição marcada.</p>}</div>
+      <Link className="botao-gerenciar" to="/professor/solicitacoes/nova"><Plus size={18} aria-hidden="true" /> Solicitar nova reposição</Link>
       <Link className="botao-gerenciar" to="/professor/reposicoes/gerenciar">Gerenciar reposições</Link>
     </section>
   </main>

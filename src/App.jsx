@@ -4,10 +4,14 @@ import RotaProtegida from "@/components/shared/RotaProtegida"
 import LayoutProfessor from "@/components/professor/LayoutProfessor"
 import { Toaster } from "@/components/ui/sonner"
 import ConteudoProgramatico from "@/pages/ConteudoProgramatico"
+import CalendarioReposicao from "@/pages/dge/CalendarioReposicao"
+import ConfirmacaoReposicao from "@/pages/dge/ConfirmacaoReposicao"
 import EditarCadastro from "@/pages/dge/EditarCadastro"
 import FichaAluno from "@/pages/dge/FichaAluno"
 import GerenciarAlunos from "@/pages/dge/GerenciarAlunos"
+import HorariosReposicao from "@/pages/dge/HorariosReposicao"
 import HistoricoAluno from "@/pages/dge/HistoricoAluno"
+import ListaSolicitacoesReposicao from "@/pages/dge/ListaSolicitacoesReposicao"
 import MenuDGE from "@/pages/dge/MenuDGE"
 import PesquisarAluno from "@/pages/dge/PesquisarAluno"
 import DiarioEletronico from "@/pages/professor/DiarioEletronico"
@@ -17,6 +21,7 @@ import AulasHoje from "@/pages/professor/AulasHoje"
 import ListaPresenca from "@/pages/professor/ListaPresenca"
 import MenuProfessor from "@/pages/professor/MenuProfessor"
 import Reposicoes from "@/pages/professor/Reposicoes"
+import SolicitarReposicao from "@/pages/professor/SolicitarReposicao"
 
 function DestinoPendente({ titulo }) {
   const { alunoId, secao } = useParams()
@@ -73,7 +78,7 @@ export default function App() {
             />
             <Route
               path="/professor/solicitacoes/nova"
-              element={<Navigate to="/professor/reposicoes" replace />}
+              element={<SolicitarReposicao />}
             />
           </Route>
           <Route path="/coordenador" element={<Navigate to="/dge" replace />} />
@@ -90,9 +95,18 @@ export default function App() {
               element={<DestinoPendente titulo="Modalidade e Disciplinas" />}
             />
             <Route path="/dge/ementas" element={<DestinoPendente titulo="Controle de Ementas" />} />
+            <Route path="/dge/reposicao" element={<CalendarioReposicao />} />
             <Route
-              path="/dge/reposicao"
-              element={<DestinoPendente titulo="Calendário de Reposição" />}
+              path="/dge/reposicao/solicitacoes/:status"
+              element={<ListaSolicitacoesReposicao />}
+            />
+            <Route
+              path="/dge/reposicao/:id/horarios"
+              element={<HorariosReposicao />}
+            />
+            <Route
+              path="/dge/reposicao/confirmacao/:id"
+              element={<ConfirmacaoReposicao />}
             />
             <Route
               path="/dge/conteudo"

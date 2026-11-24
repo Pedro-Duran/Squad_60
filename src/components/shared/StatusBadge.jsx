@@ -2,6 +2,7 @@ const STATUS = {
   pendente: { texto: 'Pendente', classe: 'status-pendente' },
   aprovada: { texto: 'Aprovada', classe: 'status-aprovada' },
   recusada: { texto: 'Recusada', classe: 'status-recusada' },
+  rejeitada: { texto: 'Rejeitada', classe: 'status-recusada' },
 }
 export default function StatusBadge({ status }) {
   const item = STATUS[status] ?? { texto: status, classe: 'status-desconhecido' }
