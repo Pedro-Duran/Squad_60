@@ -7,8 +7,10 @@ import {
   Home,
   Users,
 } from "lucide-react"
+import { Route, Routes } from "react-router"
 
 import { EstadoErro } from "@/components/shared/EstadoErro"
+import AulasSemana from "@/pages/professor/AulasSemana"
 
 function StatusBar() {
   return (
@@ -136,9 +138,11 @@ function VitrineEstadoErro() {
 }
 
 export default function App() {
-  if (window.location.pathname === "/dev/componentes") {
-    return <VitrineEstadoErro />
-  }
-
-  return <TelaAulasIntegrais />
+  return (
+    <Routes>
+      <Route path="/professor/aulas-semana" element={<AulasSemana />} />
+      <Route path="/dev/componentes" element={<VitrineEstadoErro />} />
+      <Route path="*" element={<TelaAulasIntegrais />} />
+    </Routes>
+  )
 }
