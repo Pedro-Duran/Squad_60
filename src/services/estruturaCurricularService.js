@@ -29,10 +29,15 @@ const disciplinasIniciais = [
 
 let disciplinasDb = disciplinasIniciais.map((d) => ({ ...d }))
 
-const turmas = [
-  { id: "3a-integral", nome: "3º Ano A — Integral" },
-  { id: "2b-integral", nome: "2º Ano B — Integral" },
-  { id: "1c-integral", nome: "1º Ano C — Integral" },
+export const REGIMES = ["integral", "padrao"]
+
+let turmasDb = [
+  { id: "3a", nome: "3º Ano A", regime: "integral" },
+  { id: "2b", nome: "2º Ano B", regime: "integral" },
+  { id: "1c", nome: "1º Ano C", regime: "integral" },
+  { id: "1a", nome: "1º Ano A", regime: "padrao" },
+  { id: "2c", nome: "2º Ano C", regime: "padrao" },
+  { id: "3b", nome: "3º Ano B", regime: "padrao" },
 ]
 
 const professores = [
@@ -58,7 +63,7 @@ const diasSemana = [
 const cargaEsperadaMin = 9 * 60
 
 const gradeInicial = {
-  "3a-integral": {
+  "3a": {
     seg: {
       atividades: [
         { id: "a1", disciplina: "Matemática", professor: "Ana Souza", sala: "Sala 101", inicio: "07:30", fim: "08:20" },
@@ -76,14 +81,14 @@ const gradeInicial = {
     qui: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     sex: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
   },
-  "2b-integral": {
+  "2b": {
     seg: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     ter: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     qua: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     qui: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     sex: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
   },
-  "1c-integral": {
+  "1c": {
     seg: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     ter: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
     qua: { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
@@ -93,6 +98,15 @@ const gradeInicial = {
 }
 
 let gradeDb = JSON.parse(JSON.stringify(gradeInicial))
+
+function criarGradeVazia() {
+  return Object.fromEntries(
+    diasSemana.map((dia) => [
+      dia.id,
+      { atividades: [], intervalo: { label: "Almoço", inicio: "12:00", fim: "13:00" } },
+    ]),
+  )
+}
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value))
@@ -112,13 +126,30 @@ export function atualizarStatusDisciplina(id, ativa) {
 
 export function obterOpcoesGrade() {
   return simularRequisicao(() => ({
-    turmas: clone(turmas),
+    turmas: clone(turmasDb),
     diasSemana: clone(diasSemana),
     disciplinas: clone(disciplinasDb.filter((d) => d.ativa)),
     professores: [...professores],
     salas: [...salas],
     cargaEsperadaMin,
   }), 400)
+}
+
+// Muda o regime de uma turma (integral <-> padrão).
+// A grade integral já salva é mantida ao virar padrão, para ser reaproveitada
+// se a turma voltar a ser integral. Turma que nunca foi integral começa vazia.
+export function alterarRegimeTurma({ turmaId, regime }) {
+  return simularRequisicao(() => {
+    if (!REGIMES.includes(regime)) throw new Error("Regime inválido.")
+    const turma = turmasDb.find((item) => item.id === turmaId)
+    if (!turma) throw new Error("Turma não encontrada.")
+
+    turmasDb = turmasDb.map((item) => (item.id === turmaId ? { ...item, regime } : item))
+    if (regime === "integral" && !gradeDb[turmaId]) {
+      gradeDb[turmaId] = criarGradeVazia()
+    }
+    return clone(turmasDb.find((item) => item.id === turmaId))
+  }, 500)
 }
 
 export function obterGradeIntegral({ turmaId, dia }) {

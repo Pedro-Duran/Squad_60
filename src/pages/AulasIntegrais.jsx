@@ -4,6 +4,7 @@ import {
   CalendarDays,
   ChevronDown,
   Clock3,
+  Layers,
   MapPin,
   MoreVertical,
   Pencil,
@@ -17,7 +18,12 @@ import { useNavigate } from "react-router"
 import { toast } from "sonner"
 import { BottomNav } from "@/components/BottomNav"
 import { Skeleton } from "@/components/ui/skeleton"
-import { obterGradeIntegral, obterOpcoesGrade, salvarGradeIntegral } from "@/services/estruturaCurricularService"
+import {
+  alterarRegimeTurma,
+  obterGradeIntegral,
+  obterOpcoesGrade,
+  salvarGradeIntegral,
+} from "@/services/estruturaCurricularService"
 
 const dias = [
   { id: "seg", label: "Seg" },
@@ -73,6 +79,8 @@ function calcularConflitos(atividades) {
   return conflitosPorId
 }
 
+const ROTULO_REGIME = { integral: "Integral", padrao: "Padrão" }
+
 function criarFormularioVazio() {
   return { id: null, disciplina: "", professor: "", sala: "", inicio: "", fim: "", repetirDias: [] }
 }
@@ -92,6 +100,8 @@ export function AulasIntegrais() {
   const [form, setForm] = useState(criarFormularioVazio())
   const [menuAbertoId, setMenuAbertoId] = useState(null)
   const [recarga, setRecarga] = useState(0)
+  const [regimePendente, setRegimePendente] = useState(null)
+  const [alterandoRegime, setAlterandoRegime] = useState(false)
   const gradePorDiaRef = useRef({})
   const diasAlteradosRef = useRef({})
 
@@ -147,8 +157,12 @@ export function AulasIntegrais() {
     }
   }, [])
 
+  const turmaAtual = opcoes.turmas.find((turma) => turma.id === turmaId)
+  const turmaIntegral = turmaAtual?.regime === "integral"
+
   useEffect(() => {
-    if (!turmaId) return
+    // Turma padrão não tem grade integral para carregar.
+    if (!turmaId || !turmaIntegral) return
     const diaLocal = gradePorDiaRef.current[turmaId]?.[diaAtivo]
     if (diaLocal) {
       setCarregandoGrade(false)
@@ -159,12 +173,57 @@ export function AulasIntegrais() {
     return () => {
       sinal.ativo = false
     }
-  }, [turmaId, diaAtivo, carregarGrade, recarga])
+  }, [turmaId, turmaIntegral, diaAtivo, carregarGrade, recarga])
 
   function handleTurmaChange(event) {
     setTurmaId(event.target.value)
     setCarregandoGrade(true)
     setErro("")
+  }
+
+  const temAlteracoesNaoSalvas = Object.values(diasAlterados[turmaId] || {}).some(Boolean)
+
+  function pedirMudancaRegime(regime) {
+    if (!turmaAtual || regime === turmaAtual.regime || alterandoRegime) return
+    setMenuAbertoId(null)
+    setRegimePendente(regime)
+  }
+
+  function cancelarMudancaRegime() {
+    if (alterandoRegime) return
+    setRegimePendente(null)
+  }
+
+  async function confirmarMudancaRegime() {
+    if (!turmaAtual || !regimePendente) return
+    setAlterandoRegime(true)
+    try {
+      const atualizada = await alterarRegimeTurma({ turmaId, regime: regimePendente })
+      setOpcoes((atual) => ({
+        ...atual,
+        turmas: atual.turmas.map((turma) => (turma.id === atualizada.id ? atualizada : turma)),
+      }))
+
+      // Descarta o que estava na tela para a turma: a grade é relida do serviço
+      // (e alterações não salvas são perdidas, como avisado na confirmação).
+      const gradesRestantes = { ...gradePorDiaRef.current }
+      const alteradosRestantes = { ...diasAlteradosRef.current }
+      delete gradesRestantes[turmaId]
+      delete alteradosRestantes[turmaId]
+      gradePorDiaRef.current = gradesRestantes
+      diasAlteradosRef.current = alteradosRestantes
+      setGradePorDia(gradesRestantes)
+      setDiasAlterados(alteradosRestantes)
+      setErro("")
+      if (atualizada.regime === "integral") setCarregandoGrade(true)
+
+      toast.success(`${atualizada.nome} agora é uma turma ${ROTULO_REGIME[atualizada.regime].toLowerCase()}.`)
+      setRegimePendente(null)
+    } catch {
+      toast.error("Não foi possível alterar o regime da turma. Tente novamente.")
+    } finally {
+      setAlterandoRegime(false)
+    }
   }
 
   function handleDiaChange(dia) {
@@ -412,7 +471,7 @@ export function AulasIntegrais() {
     )
   }
 
-  const carregando = carregandoOpcoes || carregandoGrade
+  const carregando = carregandoOpcoes || (turmaIntegral && carregandoGrade)
   const estadoVazio = !carregando && !erro && atividades.length === 0
   const intervaloMin = horaParaMinutos(intervalo.inicio)
   const mostrarIntervalo = secoes.manha.length > 0 && secoes.tarde.some((a) => horaParaMinutos(a.inicio) >= intervaloMin)
@@ -434,11 +493,31 @@ export function AulasIntegrais() {
           <Users size={18} />
           <select className="grade-turma-select" value={turmaId} onChange={handleTurmaChange} aria-label="Selecionar turma">
             {opcoes.turmas.map((turma) => (
-              <option key={turma.id} value={turma.id}>{turma.nome}</option>
+              <option key={turma.id} value={turma.id}>{turma.nome} — {ROTULO_REGIME[turma.regime]}</option>
             ))}
           </select>
           <ChevronDown size={18} className="grade-turma-chevron" />
         </div>
+
+        {turmaAtual && (
+          <div className="grade-regime" role="group" aria-label="Regime da turma">
+            <p className="grade-regime-label">Regime da turma</p>
+            <div className="grade-regime-options">
+              {Object.entries(ROTULO_REGIME).map(([regime, rotulo]) => (
+                <button
+                  key={regime}
+                  type="button"
+                  className={`grade-regime-btn ${turmaAtual.regime === regime ? "is-active" : ""}`}
+                  aria-pressed={turmaAtual.regime === regime}
+                  disabled={alterandoRegime}
+                  onClick={() => pedirMudancaRegime(regime)}
+                >
+                  {rotulo}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {carregando ? (
           <div className="grade-loading" aria-hidden="true">
@@ -449,6 +528,17 @@ export function AulasIntegrais() {
             <Skeleton className="grade-card-skeleton" />
             <Skeleton className="grade-card-skeleton" />
             <Skeleton className="grade-card-skeleton" />
+          </div>
+        ) : turmaAtual && !turmaIntegral ? (
+          <div className="grade-state">
+            <Layers size={40} className="grade-state-icon" />
+            <h2 className="grade-state-title">Turma de regime padrão</h2>
+            <p className="grade-state-text">
+              {turmaAtual.nome} não possui grade de aulas integrais. Altere o regime para integral para configurar a grade.
+            </p>
+            <button type="button" className="grade-retry" onClick={() => pedirMudancaRegime("integral")}>
+              Alterar para integral
+            </button>
           </div>
         ) : erro ? (
           <div className="grade-state">
@@ -529,6 +619,43 @@ export function AulasIntegrais() {
       </main>
 
       <BottomNav ativo="registros" />
+
+      {regimePendente && turmaAtual && (
+        <div className="sheet-overlay" role="presentation" onClick={cancelarMudancaRegime}>
+          <div
+            className="sheet-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Confirmar alteração de regime"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sheet-header">
+              <h2>
+                {regimePendente === "integral" ? "Alterar para turma integral?" : "Alterar para turma padrão?"}
+              </h2>
+              <button type="button" className="sheet-close" aria-label="Fechar" onClick={cancelarMudancaRegime} disabled={alterandoRegime}>
+                <X size={18} />
+              </button>
+            </div>
+            <p className="sheet-text">
+              {regimePendente === "integral"
+                ? `${turmaAtual.nome} passará a ter grade de aulas integrais, com carga de ${formatarCarga(cargaEsperadaMin)} por dia, que poderá ser configurada nesta tela.`
+                : `${turmaAtual.nome} deixará de ter a grade integral exibida e editável. Os horários já salvos são mantidos caso a turma volte a ser integral.`}
+            </p>
+            {regimePendente === "padrao" && temAlteracoesNaoSalvas && (
+              <p className="sheet-warning">Há alterações não salvas na grade desta turma. Elas serão descartadas.</p>
+            )}
+            <div className="sheet-actions">
+              <button type="button" className="sheet-btn sheet-btn--cancel" onClick={cancelarMudancaRegime} disabled={alterandoRegime}>
+                Cancelar
+              </button>
+              <button type="button" className="sheet-btn sheet-btn--add" onClick={confirmarMudancaRegime} disabled={alterandoRegime}>
+                {alterandoRegime ? "Alterando..." : "Confirmar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {sheetAberto && (
         <div className="sheet-overlay" role="presentation" onClick={fecharSheet}>

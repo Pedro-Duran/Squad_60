@@ -426,6 +426,16 @@ select {
 .sheet-btn--cancel { border: 1px solid #cfd6e3; background: #fff; color: #173ec3; }
 .sheet-btn--add { border: 0; background: #173ec3; color: #fff; }
 .sheet-btn--add:disabled { background: #a9b7dd; cursor: not-allowed; }
+.sheet-btn--cancel:disabled { opacity: .6; cursor: not-allowed; }
+.sheet-text { margin: 0; font-size: .88rem; color: #475467; line-height: 1.45; }
+.sheet-warning { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: #fff7e6; color: #92400e; font-size: .8rem; font-weight: 600; line-height: 1.4; }
+.grade-regime { margin-bottom: 12px; }
+.grade-regime-label { margin: 0 0 6px; font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: #667085; }
+.grade-regime-options { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; background: #e7eaf1; }
+.grade-regime-btn { border: 0; border-radius: 9px; padding: 9px 10px; background: transparent; color: #334155; font-size: .82rem; font-weight: 700; cursor: pointer; }
+.grade-regime-btn.is-active { background: #10275c; color: #fff; }
+.grade-regime-btn:disabled { opacity: .6; cursor: not-allowed; }
+.grade-state-icon { color: #9aa6bb; }
 
 @media (min-width: 720px) {
   .home-header { padding: 28px 36px 24px; }
